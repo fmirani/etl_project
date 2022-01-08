@@ -48,10 +48,12 @@ def fill_missing_data(link: str) -> tuple[str, str]:
     cat_file = conf["youtube"]["cat_file"]
     api_key = conf["youtube"]["api_key"]
 
+    # If YouTube categroty file does not exist, create it
     if not os.path.exists(cat_file):
         logger.info("YouTube categories file not found.")
         create_cat_file(cat_file)
 
+    # Load YouTube categroty file
     with open(cat_file) as jfile:
         cats = json.load(jfile)
 
