@@ -8,6 +8,16 @@ CONF_FILE = "config.yaml"
 logger = get_logger("transform")
 
 
+def transform_data(service: str, data_file: str) -> pd.DataFrame:
+    '''
+    Simple function to guide the request to the right function
+    '''
+    if service == "youtube":
+        return(transform_youtube_data(data_file))
+    else:
+        return(transform_netflix_data(data_file))
+
+
 def transform_youtube_data(filename: str) -> pd.DataFrame:
     '''
     Function to fetch youtube data from the history file
@@ -84,6 +94,7 @@ def transform_netflix_data(filename: str) -> pd.DataFrame:
     # Import Name column to our dataframe
     data["Name"] = nf_data["Title"]
 
+    # Keywords to identify if a title is a TV series
     keywds = ["Season", "season", "SEASON",
               "Series", "series", "SERIES",
               "Limited", "limited", "LIMITED",
@@ -113,4 +124,5 @@ def transform_netflix_data(filename: str) -> pd.DataFrame:
         data = data.loc[pd.to_datetime(
             data["Timestamp"]) < datetime.now() - timedelta(days=simulate_offset)]
 
+    # return DataFrame
     return(data)

@@ -77,8 +77,7 @@ def update_db(data: pd.DataFrame) -> int:
 
     added = 0
 
-    try:
-        # to connect to the database
+    try:  # to connect to the database
         db_name = conf["database"]["name"]
         conn = sqlite.connect(db_name)
         logger.info(f"Database {conn} connected")
@@ -96,7 +95,7 @@ def update_db(data: pd.DataFrame) -> int:
         #     break
         #     i += 1
         select_query, values = get_select_query(item)
-        try:
+        try:  # to execute SELECT query
             cursor.execute(select_query, values)
             record = cursor.fetchall()
             logger.info("Select query successful")
@@ -105,12 +104,15 @@ def update_db(data: pd.DataFrame) -> int:
             logger.error("Unable to execute SELECT query.")
             return (0)
 
+        # If SELECT query returns any result(s),
+        # no need to INSERT
         if len(record) > 0:
             logger.info(f"But item {ind} exists already in the database")
             continue
 
         insert_query, values = get_insert_query(item)
-        try:
+
+        try:  # to execute INSERT query
             cursor.execute(insert_query, values)
             added += 1
             logger.info("Insert query successful")
@@ -120,9 +122,11 @@ def update_db(data: pd.DataFrame) -> int:
             logger.error("Unable to execute INSERT query.")
             return (0)
 
-    if added > 0:
-        conn.commit()
+        # Commit the INSERTs to the database in batches of 100
+        if added % 100 == 0:
+            conn.commit()
 
+    conn.commit()
     cursor.close()
     conn.close()
     logger.info("PostgreSQL connection is now closed")

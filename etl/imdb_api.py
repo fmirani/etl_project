@@ -11,12 +11,11 @@ def get_genre(name: str) -> str:
     '''
     genres = ""
 
-    # create an instance of the IMDb class
-    try:
+    try:  # to create an instance of the IMDb class
         ia = IMDb()
     except Exception as err:
         logger.error(f"IMDb instance failed: {err}")
-        return("")
+        return(genres)
 
     # Search the title
     logger.info(f"Searching name: {name}")
@@ -30,7 +29,7 @@ def get_genre(name: str) -> str:
     # Get the ID of the first result
     id = movies[0].movieID
 
-    # Get the id
+    # Get the IMDb.movie object from the ID
     movie = ia.get_movie(id)
     logger.info(f'Title: {movie}')
 

@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from transform import transform_youtube_data, transform_netflix_data
+from transform import transform_data
 from load import update_db
 from config import loadconfig
 from logger import get_logger
@@ -18,24 +18,20 @@ def update_data(service: str, data_file: str) -> pd.DataFrame:
     3. return number of items added
     '''
 
-    # Read new data
-    if service == "youtube":  # from youtube
-        if os.path.exists(data_file):  # Does the file exist?
-            data = transform_youtube_data(data_file)  # Yes it does
-        else:  # No it does not !
-            logger.error("YouTube data file not found")
-            return 0
-    elif service == "netflix":  # from netflix
-        if os.path.exists(data_file):  # Does the file exist
-            data = transform_netflix_data(data_file)  # Yes it does
-        else:  # No it does not !
-            logger.error("Netflix data file not found")
-            return 0
-    else:  # only youtube or netflix possible
+    # Make sure the data file exists
+    if not os.path.exists(data_file):
+        logger.error(f"{service} data file not found")
+        return 0
+
+    # Make sure the service name is correct
+    if service not in ["youtube", "netflix"]:
         logger.error("Incorrect service name")
         return 0
 
-    # Update the database
+    # Transform data in the file to correct format
+    data = transform_data(service, data_file)
+
+    # Load the data into the database
     items_updated = update_db(data)
 
     return(items_updated)

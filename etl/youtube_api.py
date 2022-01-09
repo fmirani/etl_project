@@ -35,14 +35,20 @@ def create_cat_file(cfile: str) -> None:
 
     cats = response["items"]
     dict = {}
+
+    # Set up everything in a dict
     for cat in cats:
         dict[cat["id"]] = cat["snippet"]["title"]
 
+    # Dump the dict in the category file
     with open(cfile, "w") as f:
         json.dump(dict, f)
 
 
 def fill_missing_data(link: str) -> tuple[str, str]:
+    '''
+    Function to fill missing data from YouTube
+    '''
 
     conf = loadconfig(CONF_FILE)
     cat_file = conf["youtube"]["cat_file"]
@@ -73,6 +79,7 @@ def fill_missing_data(link: str) -> tuple[str, str]:
     except HttpError as err:  # API call didn't work
         logger.error(f"API call failed: {err}")
         logger.error(f"Could not retrieve information for: {link}")
+        # If the problem is from the remote end
         if err.resp.status in [403, 500, 503]:
             logger.info(
                 "Going to sleep for 5 secs and then return empty strings")
