@@ -1,7 +1,7 @@
 netflix:
   history_file: data/nf_history.csv
 youtube:
-  api_key: AIzaSyAu_nkHGYNwNCnPjJ7csph9mUxvGVWSd2k
+  api_key: GOOGLE_API_KEY_GOES_HERE
   history_file: data/yt_history.html
   cat_file: data/cats.json
   simulate_offset: 45

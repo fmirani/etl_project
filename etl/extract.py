@@ -6,7 +6,6 @@ from config import loadconfig
 from logger import get_logger
 
 
-CONF_FILE = "config.yaml"
 logger = get_logger("extract")
 
 
@@ -39,7 +38,7 @@ def update_data(service: str, data_file: str) -> pd.DataFrame:
 
 if __name__ == "__main__":
 
-    conf = loadconfig(CONF_FILE)
+    conf = loadconfig()
 
     yt_history = conf["youtube"]["history_file"]
     nf_history = conf["netflix"]["history_file"]

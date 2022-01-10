@@ -3,12 +3,9 @@ from logging.handlers import RotatingFileHandler
 from config import loadconfig
 
 
-CONF_FILE = "config.yaml"
-
-
 def get_logger(log):
 
-    conf = loadconfig(CONF_FILE)
+    conf = loadconfig()
     log_file = conf["log"]["filename"]
 
     logger = logging.getLogger(log)

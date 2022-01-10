@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup as bs
 from config import loadconfig
 from logger import get_logger
 
-CONF_FILE = "config.yaml"
+
 logger = get_logger("transform")
 
 
@@ -27,7 +27,7 @@ def transform_youtube_data(filename: str) -> pd.DataFrame:
     4. Populate the dataframe
     '''
 
-    conf = loadconfig(CONF_FILE)
+    conf = loadconfig()
     simulated = conf["youtube"]["simulated"]
     simulate_offset = conf["youtube"]["simulate_offset"]
 
@@ -74,7 +74,7 @@ def transform_netflix_data(filename: str) -> pd.DataFrame:
     4. Populate the dataframe
     '''
 
-    conf = loadconfig(CONF_FILE)
+    conf = loadconfig()
     simulated = conf["youtube"]["simulated"]
     simulate_offset = conf["youtube"]["simulate_offset"]
 

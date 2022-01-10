@@ -6,7 +6,6 @@ from imdb_api import get_genre
 from logger import get_logger
 
 
-CONF_FILE = "config.yaml"
 logger = get_logger("load")
 
 
@@ -73,7 +72,7 @@ def update_db(data: pd.DataFrame) -> int:
     4. returns the number of items added
     '''
 
-    conf = loadconfig(CONF_FILE)
+    conf = loadconfig()
 
     added = 0
 

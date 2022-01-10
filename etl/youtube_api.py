@@ -8,7 +8,6 @@ from config import loadconfig
 from logger import get_logger
 
 
-CONF_FILE = "config.yaml"
 logger = get_logger("youtube")
 
 
@@ -17,7 +16,7 @@ def create_cat_file(cfile: str) -> None:
     Function to create a video Categories file
     '''
     logger.info("Youtube categories file to be created now")
-    conf = loadconfig(CONF_FILE)
+    conf = loadconfig()
     api_key = conf["youtube"]["api_key"]
 
     # Build Google API instance
@@ -50,7 +49,7 @@ def fill_missing_data(link: str) -> tuple[str, str]:
     Function to fill missing data from YouTube
     '''
 
-    conf = loadconfig(CONF_FILE)
+    conf = loadconfig()
     cat_file = conf["youtube"]["cat_file"]
     api_key = conf["youtube"]["api_key"]
 
