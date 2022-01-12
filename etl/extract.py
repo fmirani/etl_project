@@ -24,7 +24,8 @@ def update_data(service: str, data_file: str) -> pd.DataFrame:
 
     # Make sure the service name is correct
     if service not in ["youtube", "netflix"]:
-        logger.error("Incorrect service name")
+        logger.error(
+            f"Incorrect service name. Expecting 'youtube' or 'netflix', provided {service}")
         return 0
 
     # Transform data in the file to correct format

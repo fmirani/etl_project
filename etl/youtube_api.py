@@ -15,7 +15,7 @@ def create_cat_file(cfile: str) -> None:
     '''
     Function to create a video Categories file
     '''
-    logger.info("Youtube categories file to be created now")
+    logger.warning("Youtube categories file to be created now")
     conf = loadconfig()
     api_key = conf["youtube"]["api_key"]
 
@@ -28,9 +28,9 @@ def create_cat_file(cfile: str) -> None:
     try:  # Try to get response
         response = request.execute()
     except HttpError as err:  # API call didn't work
-        logger.error(f"API Call failed: {err}")
+        logger.error(err)
         logger.error("Could not create YouTube categories file. Exiting")
-        exit()
+        raise HttpError
 
     cats = response["items"]
     dict = {}
@@ -44,7 +44,7 @@ def create_cat_file(cfile: str) -> None:
         json.dump(dict, f)
 
 
-def fill_missing_data(link: str) -> tuple[str, str]:
+def get_missing_data(link: str) -> tuple[str, str]:
     '''
     Function to fill missing data from YouTube
     '''
@@ -55,7 +55,7 @@ def fill_missing_data(link: str) -> tuple[str, str]:
 
     # If YouTube categroty file does not exist, create it
     if not os.path.exists(cat_file):
-        logger.info("YouTube categories file not found.")
+        logger.warning("YouTube categories file not found.")
         create_cat_file(cat_file)
 
     # Load YouTube categroty file
@@ -68,6 +68,7 @@ def fill_missing_data(link: str) -> tuple[str, str]:
     # Extract the video Id from the link
     id = link.split("v=")[1]
 
+    logger.debug("Preparing YouTube API call")
     # Prepare to call videos.list() for "id" filter
     request = youtube.videos().list(
         part="snippet",
@@ -75,24 +76,26 @@ def fill_missing_data(link: str) -> tuple[str, str]:
 
     try:  # Try to get response
         response = request.execute()
+        logger.debug("YouTube API call successful")
     except HttpError as err:  # API call didn't work
-        logger.error(f"API call failed: {err}")
+        logger.error(f"YouTube API call failed: {err}")
         logger.error(f"Could not retrieve information for: {link}")
         # If the problem is from the remote end
         if err.resp.status in [403, 500, 503]:
-            logger.info(
+            logger.warning(
                 "Going to sleep for 5 secs and then return empty strings")
             time.sleep(5)
         return("", "")
 
     # Check to see if some data is returned in the API call
     if response["pageInfo"]["totalResults"] == 0:
-        logger.info("API response empty. Returning empty strings")
+        logger.debug("API response empty. Returning empty strings")
         return("", "")
 
     # Fill both columns with info retrieved from YouTube
     name = response["items"][0]["snippet"]["title"]
     cat = cats[response["items"][0]["snippet"]["categoryId"]]
+    logger.debug(f"Name: {name}, Categories: {cat}")
 
     # Had to add this to remove any unprintable chars returned by API call
     name = ''.join([str(char) for char in name if char in string.printable])

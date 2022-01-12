@@ -26,7 +26,7 @@ def transform_youtube_data(filename: str) -> pd.DataFrame:
     3. Format the data as needed
     4. Populate the dataframe
     '''
-
+    logger.info("Transforming YouTube data now")
     conf = loadconfig()
     simulated = conf["youtube"]["simulated"]
     simulate_offset = conf["youtube"]["simulate_offset"]
@@ -73,7 +73,7 @@ def transform_netflix_data(filename: str) -> pd.DataFrame:
     3. Format the data as needed
     4. Populate the dataframe
     '''
-
+    logger.info("Transforming Netflix data now")
     conf = loadconfig()
     simulated = conf["youtube"]["simulated"]
     simulate_offset = conf["youtube"]["simulate_offset"]
@@ -95,13 +95,7 @@ def transform_netflix_data(filename: str) -> pd.DataFrame:
     data["Name"] = nf_data["Title"]
 
     # Keywords to identify if a title is a TV series
-    keywds = ["Season", "season", "SEASON",
-              "Series", "series", "SERIES",
-              "Limited", "limited", "LIMITED",
-              "Part", "part", "PART",
-              "Volume", "volume", "VOLUME",
-              "Chapter", "chapter", "CHAPTER"
-              ]
+    keywds = ["Season", "Series", "Limited", "Part", "Volume", "Chapter"]
 
     # Set "Type" column to either "Movie" or "TV Series"
     data.loc[data["Name"].str.contains(

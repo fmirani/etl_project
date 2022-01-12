@@ -9,7 +9,7 @@ def loadconfig() -> dict:
     '''
     filename = "config.yaml"
     if not os.path.exists(filename):
-        raise ValueError("Config file 'config.yaml' not found. ")
+        raise OSError("Config file 'config.yaml' not found. ")
 
     with open(filename, "r") as f:
         config = yaml.safe_load(f)

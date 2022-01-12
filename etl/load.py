@@ -1,15 +1,16 @@
 from config import loadconfig
 import sqlite3 as sqlite
 import pandas as pd
-from youtube_api import fill_missing_data
+from youtube_api import get_missing_data
 from imdb_api import get_genre
 from logger import get_logger
+from concurrent.futures import ThreadPoolExecutor
 
 
 logger = get_logger("load")
 
 
-def get_select_query(item) -> tuple[str, str]:
+def exec_select_query(item: pd.DataFrame, cursor: object) -> bool:
     '''
     Function to set up the SELECT query
     '''
@@ -33,7 +34,22 @@ def get_select_query(item) -> tuple[str, str]:
                 "WHERE timestamp = ? AND vname = ? AND episode = ?"
             values = (timestamp, name, episode)
 
-    return(query, values)
+    try:  # to execute SELECT query
+        cursor.execute(query, values)
+        record = cursor.fetchall()
+        logger.debug("Select query successful")
+    except Exception as err:
+        logger.error(f"ERROR: {err}")
+        logger.error("Unable to execute SELECT query.")
+        exit()
+
+    # If SELECT query returns any result(s),
+    # no need to INSERT
+    if len(record) > 0:
+        logger.debug(f"But this item already exists in the database")
+        return(False)
+
+    return(True)
 
 
 def get_insert_query(item) -> tuple[str, str]:
@@ -41,17 +57,22 @@ def get_insert_query(item) -> tuple[str, str]:
     Function to set up the INSERT query
     '''
 
-    timestamp = str(item["Timestamp"])
-    link = item["Link"]
-    name = item["Name"]
-    season = item["Season"]
-    episode = item["Episode"]
-    source = item["Source"]
-    _type = item["Type"]
-    cat = item["Category"]
+    # Check if data["to_insert"] is False
+    if not item[8]:
+        logger.debug("Insert query not needed")
+        return("", "")
+
+    timestamp = str(item[0])
+    source = item[1]
+    _type = item[2]
+    name = item[3]
+    season = item[4]
+    episode = item[5]
+    cat = item[6]
+    link = item[7]
 
     if source == "YouTube":
-        name, cat = fill_missing_data(link)
+        name, cat = get_missing_data(link)
     else:
         cat = get_genre(name)
 
@@ -67,14 +88,12 @@ def update_db(data: pd.DataFrame) -> int:
     '''
     Function to update the database
     1. connect to the database
-    2. run queries to see if update is needed
-    3. insert new items in the database if applicable
-    4. returns the number of items added
+    2. run select queries to see if db update is needed
+    3. run insert queries to add items in the database
+    4. returns the number of items added to the db
     '''
 
     conf = loadconfig()
-
-    added = 0
 
     try:  # to connect to the database
         db_name = conf["database"]["name"]
@@ -88,44 +107,50 @@ def update_db(data: pd.DataFrame) -> int:
         logger.error("Please check the configuration in the yaml file.")
         return 0
 
-    # i = 0
-    for ind, item in data.iterrows():
-        # if i >= 30:
-        #     break
-        #     i += 1
-        select_query, values = get_select_query(item)
-        try:  # to execute SELECT query
-            cursor.execute(select_query, values)
-            record = cursor.fetchall()
-            logger.info("Select query successful")
-        except Exception as err:
-            logger.error(f"ERROR: {err}")
-            logger.error("Unable to execute SELECT query.")
-            return (0)
+    # Apply exec_select_query to all the row of the dataframe
+    # exec_select_query returns:
+    # True -> if this item needs to be added in the database
+    # False -> if the item already exists in the database
+    data["to_insert"] = data.apply(exec_select_query, args=(cursor,), axis=1)
 
-        # If SELECT query returns any result(s),
-        # no need to INSERT
-        if len(record) > 0:
-            logger.info(f"But item {ind} exists already in the database")
-            continue
+    items = len(data[(data["to_insert"])])
+    logger.info(f"{items} items to add in the database")
 
-        insert_query, values = get_insert_query(item)
+    # Starting a context manager to handle parallel threads.
+    # Passing each row of the dataframe to get_insert_query
+    # in a separate thread.
+    logger.info("Starting context manager for threading")
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        p_queries = zip(executor.map(
+            get_insert_query, data.values.tolist()))
 
-        try:  # to execute INSERT query
-            cursor.execute(insert_query, values)
-            added += 1
-            logger.info("Insert query successful")
-            logger.info(f"Item no. {ind} added to database")
-        except Exception as err:
-            logger.error(f"ERROR: {err}")
-            logger.error("Unable to execute INSERT query.")
-            return (0)
+    logger.info("Out of context manager now")
 
-        # Commit the INSERTs to the database in batches of 100
+    list_queries = list(p_queries)
+
+    added: int = 0
+    for tuple_query in list_queries:
+        for query in tuple_query:
+            # No query to execute, continue if true
+            if len(query) < 1:
+                logger.debug("No query to run for INSERT")
+                continue
+
+            try:  # to execute INSERT query
+                cursor.execute(query[0], query[1])
+                logger.debug("Insert query successful")
+                added += 1
+            except Exception as err:
+                logger.error(f"ERROR: {err}")
+                logger.error("Unable to execute INSERT query.")
+                continue
+        # Commit in batches of 100 to be on the safe side
         if added % 100 == 0:
             conn.commit()
 
     conn.commit()
+    logger.info(f"{added} items added in the database")
+
     cursor.close()
     conn.close()
     logger.info("PostgreSQL connection is now closed")
