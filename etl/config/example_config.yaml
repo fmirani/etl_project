@@ -1,0 +1,50 @@
+# Global settings
+global:
+
+  # Data path of the folder where usr data shall reside
+  data_path: ~/etl/
+
+# Netflix settings
+netflix:
+  
+  # Do we have Netflix data
+  handler: True
+
+  # Path for Netflix data
+  history_file: nf_history.csv
+
+# YouTube settings
+youtube:
+  
+  # Do we have YouTube data
+  handler: True
+  
+  # Google API key
+  api_key: GOOGLE_API_KEY_GOES_HERE
+
+  # Path for YouTube data
+  history_file: yt_history.html
+
+  # Path for YouTube categories file
+  cat_file: data/cats.json
+
+# Simulation settings
+simulation:
+  
+  # Should we simulate the data
+  simulated: True
+
+  # How much days to offset
+  simulate_offset: 45
+
+# Database settings
+database:
+
+  # Full path for Database
+  name: data/database.db
+
+# Log settings
+log:
+
+  # Full path for log file name
+  filename: data/logs/etl.log

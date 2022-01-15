@@ -1,8 +1,8 @@
 import pandas as pd
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup as bs
-from config import loadconfig
-from logger import get_logger
+from etl.config import loadconfig
+from etl.logger import get_logger
 
 
 logger = get_logger("transform")
@@ -28,8 +28,8 @@ def transform_youtube_data(filename: str) -> pd.DataFrame:
     '''
     logger.info("Transforming YouTube data now")
     conf = loadconfig()
-    simulated = conf["youtube"]["simulated"]
-    simulate_offset = conf["youtube"]["simulate_offset"]
+    simulated = conf["simulation"]["simulated"]
+    simulate_offset = conf["simulation"]["simulate_offset"]
 
     # Create a new dataframe
     data = pd.DataFrame(
@@ -61,6 +61,10 @@ def transform_youtube_data(filename: str) -> pd.DataFrame:
     data["Type"] = "Video"
     data["Link"] = link
 
+    # Log a warning if the DataFrame is being returned empty
+    if data.shape[0] < 1:
+        logger.warning(f"DataFrame does not contain any data")
+
     # Return dataframe
     return(data)
 
@@ -75,15 +79,21 @@ def transform_netflix_data(filename: str) -> pd.DataFrame:
     '''
     logger.info("Transforming Netflix data now")
     conf = loadconfig()
-    simulated = conf["youtube"]["simulated"]
-    simulate_offset = conf["youtube"]["simulate_offset"]
+    simulated = conf["simulation"]["simulated"]
+    simulate_offset = conf["simulation"]["simulate_offset"]
 
     # Create a new dataframe
     data = pd.DataFrame(
         columns=["Timestamp", "Source", "Type", "Name", "Season", "Episode", "Category", "Link"])
 
     # Read csv data into a separate dataframe
-    nf_data = pd.read_csv(filename)
+    try:
+        # Reading data from csv file
+        nf_data = pd.read_csv(filename)
+    except Exception as e:
+        logger.error(f"Unable to read csv file '{filename}' : ", e)
+        logger.warning(f"DataFrame does not contain any data")
+        return(data)
 
     # Import Timestamp column to our datadrame as datetime
     data["Timestamp"] = pd.to_datetime(nf_data["Date"], format="%m/%d/%y")

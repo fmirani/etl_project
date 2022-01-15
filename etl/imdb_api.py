@@ -1,5 +1,5 @@
 from imdb import IMDb
-from logger import get_logger
+from etl.logger import get_logger
 
 logger = get_logger("imdb")
 

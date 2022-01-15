@@ -1,9 +1,10 @@
-from config import loadconfig
+import os
 import sqlite3 as sqlite
 import pandas as pd
-from youtube_api import get_missing_data
-from imdb_api import get_genre
-from logger import get_logger
+from etl.youtube_api import get_missing_data
+from etl.imdb_api import get_genre
+from etl.logger import get_logger
+from etl.config import loadconfig
 from concurrent.futures import ThreadPoolExecutor
 
 
@@ -57,11 +58,6 @@ def get_insert_query(item) -> tuple[str, str]:
     Function to set up the INSERT query
     '''
 
-    # Check if data["to_insert"] is False
-    if not item[8]:
-        logger.debug("Insert query not needed")
-        return("", "")
-
     timestamp = str(item[0])
     source = item[1]
     _type = item[2]
@@ -84,7 +80,46 @@ def get_insert_query(item) -> tuple[str, str]:
     return(query, values)
 
 
-def update_db(data: pd.DataFrame) -> int:
+def create_database(db_name: str) -> None:
+
+    logger.info("Creating and setting up a new database")
+
+    try:  # to connect to the database
+        conn = sqlite.connect(db_name)
+        logger.info(f"Database {conn} connected")
+    except Exception as err:
+        logger.error(f"Unable to connect to the Database: {err}")
+        logger.error("Please check the configuration in the yaml file.")
+        exit(1)
+
+    # CREATE TABLE query
+    query = 'CREATE TABLE watched '\
+        '(id INTEGER PRIMARY KEY AUTOINCREMENT, '\
+        '"timestamp" TIMESTAMP WITHOUT TIME ZONE NOT NULL, '\
+        'source CHARACTER VARYING(255), '\
+        '"type" CHARACTER VARYING(255), '\
+        'vname CHARACTER VARYING(355), '\
+        'season CHARACTER VARYING(255), '\
+        'episode CHARACTER VARYING(255), '\
+        'category CHARACTER VARYING(255), '\
+        'vlink category CHARACTER VARYING(355) );'
+
+    # Create a cursor to perform operations
+    cursor = conn.cursor()
+
+    try:  # to execute CREATE TABLE query
+        cursor.execute(query)
+        logger.debug("CREATE TABLE query successful")
+    except Exception as err:
+        logger.error(f"ERROR: {err}")
+        logger.error("Unable to create table in the datebase.")
+        exit(1)
+
+    cursor.close()
+    conn.close()
+
+
+def load_data(data: pd.DataFrame) -> int:
     '''
     Function to update the database
     1. connect to the database
@@ -94,18 +129,23 @@ def update_db(data: pd.DataFrame) -> int:
     '''
 
     conf = loadconfig()
+    data_path = os.path.expanduser(conf["global"]["data_path"])
+    db_name = os.path.join(data_path, conf["database"]["name"])
+
+    if not os.path.exists(db_name):
+        logger.info(f"No database found at '{db_name}'")
+        create_database(db_name)
 
     try:  # to connect to the database
-        db_name = conf["database"]["name"]
         conn = sqlite.connect(db_name)
         logger.info(f"Database {conn} connected")
-
-        # and create a cursor to perform operations
-        cursor = conn.cursor()
     except Exception as err:
         logger.error(f"Unable to connect to the Database: {err}")
         logger.error("Please check the configuration in the yaml file.")
         return 0
+
+    # Create a cursor to perform operations
+    cursor = conn.cursor()
 
     # Apply exec_select_query to all the row of the dataframe
     # exec_select_query returns:
@@ -114,7 +154,10 @@ def update_db(data: pd.DataFrame) -> int:
     data["to_insert"] = data.apply(exec_select_query, args=(cursor,), axis=1)
 
     items = len(data[(data["to_insert"])])
-    logger.info(f"{items} items to add in the database")
+    logger.info(f"{items} item(s) to add in the database")
+
+    # Convert the relevant rows in the dataframe to list format
+    data_list = data[data.to_insert].values.tolist()
 
     # Starting a context manager to handle parallel threads.
     # Passing each row of the dataframe to get_insert_query
@@ -122,7 +165,7 @@ def update_db(data: pd.DataFrame) -> int:
     logger.info("Starting context manager for threading")
     with ThreadPoolExecutor(max_workers=5) as executor:
         p_queries = zip(executor.map(
-            get_insert_query, data.values.tolist()))
+            get_insert_query, data_list))
 
     logger.info("Out of context manager now")
 

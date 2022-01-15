@@ -1,6 +1,7 @@
+import os
 import logging
 from logging.handlers import RotatingFileHandler
-from config import loadconfig
+from etl.config import loadconfig
 
 
 def get_logger(log):
@@ -8,8 +9,11 @@ def get_logger(log):
     Simple function to set up a logger
     '''
 
+    curr_path = os.path.dirname(os.path.abspath(__file__))
+
     conf = loadconfig()
-    log_file = conf["log"]["filename"]
+
+    log_file = os.path.join(curr_path, conf["log"]["filename"])
 
     logger = logging.getLogger(log)
     logger.setLevel(logging.DEBUG)

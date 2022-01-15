@@ -1,53 +1,28 @@
 import os
-import pandas as pd
-from transform import transform_data
-from load import update_db
-from config import loadconfig
-from logger import get_logger
+from etl.logger import get_logger
 
 
 logger = get_logger("extract")
 
 
-def update_data(service: str, data_file: str) -> pd.DataFrame:
+def extract_data(service: str, data_file: str) -> tuple[str, str]:
     '''
     Function to orchestrate the operation
     1. fetch data from latest files
     2. update the database
     3. return number of items added
     '''
+    logger.info(f"Extracting data for {service} from {data_file}..")
 
     # Make sure the data file exists
     if not os.path.exists(data_file):
-        logger.error(f"{service} data file not found")
-        return 0
+        logger.error(f"'{service}' data file not found")
+        return("", "")
 
     # Make sure the service name is correct
     if service not in ["youtube", "netflix"]:
         logger.error(
             f"Incorrect service name. Expecting 'youtube' or 'netflix', provided {service}")
-        return 0
+        return("", "")
 
-    # Transform data in the file to correct format
-    data = transform_data(service, data_file)
-
-    # Load the data into the database
-    items_updated = update_db(data)
-
-    return(items_updated)
-
-
-if __name__ == "__main__":
-
-    conf = loadconfig()
-
-    yt_history = conf["youtube"]["history_file"]
-    nf_history = conf["netflix"]["history_file"]
-
-    logger.info(f"Start of program.")
-
-    yt_data = update_data("youtube", yt_history)
-    logger.info(f"{yt_data} items updated for YouTube in the table")
-
-    nf_data = update_data("netflix", nf_history)
-    logger.info(f"{nf_data} items updated for Netflix in the table")
+    return(service, data_file)

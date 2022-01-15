@@ -4,8 +4,8 @@ import time
 import string
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from config import loadconfig
-from logger import get_logger
+from etl.config import loadconfig
+from etl.logger import get_logger
 
 
 logger = get_logger("youtube")
@@ -48,9 +48,10 @@ def get_missing_data(link: str) -> tuple[str, str]:
     '''
     Function to fill missing data from YouTube
     '''
-
+    curr_path = os.path.dirname(os.path.abspath(__file__))
     conf = loadconfig()
-    cat_file = conf["youtube"]["cat_file"]
+
+    cat_file = os.path.join(curr_path, conf["youtube"]["cat_file"])
     api_key = conf["youtube"]["api_key"]
 
     # If YouTube categroty file does not exist, create it

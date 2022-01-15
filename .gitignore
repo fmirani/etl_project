@@ -1,9 +1,13 @@
-db_test.py
 /__pycache__/
+/build/
+/dist/
+/etl.egg-info/
 /venv/
+setup.py
+MANIFEST.in
 /etl/__pycache__/
-/etl/config.yaml
-/etl/data/mydb.db
+/etl/config/config.yaml
+/etl/data/logs/
+/etl/data/database.db
 /etl/data/nf_history.csv
 /etl/data/yt_history.html
-/etl/data/log/etl.log
