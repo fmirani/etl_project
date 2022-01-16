@@ -58,6 +58,7 @@ def get_insert_query(item) -> tuple[str, str]:
     Function to set up the INSERT query
     '''
 
+    # Not proud of this but it is what it is :)
     timestamp = str(item[0])
     source = item[1]
     _type = item[2]
