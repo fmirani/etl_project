@@ -3,11 +3,7 @@
 /dist/
 /etl.egg-info/
 /venv/
-setup.py
-MANIFEST.in
 /etl/__pycache__/
-/etl/config/config.yaml
-/etl/data/logs/
-/etl/data/database.db
-/etl/data/nf_history.csv
-/etl/data/yt_history.html
+api_key.txt
+yt_history.html
+nf_history.csv

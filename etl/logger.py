@@ -9,11 +9,9 @@ def get_logger(log):
     Simple function to set up a logger
     '''
 
-    curr_path = os.path.dirname(os.path.abspath(__file__))
-
     conf = loadconfig()
-
-    log_file = os.path.join(curr_path, conf["log"]["filename"])
+    log_path = os.path.expanduser(conf["global"]["data_path"])
+    log_file = os.path.join(log_path, conf["log"]["filename"])
 
     logger = logging.getLogger(log)
     logger.setLevel(logging.DEBUG)

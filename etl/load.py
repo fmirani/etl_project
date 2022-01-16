@@ -2,6 +2,7 @@ import os
 import sqlite3 as sqlite
 import pandas as pd
 from etl.youtube_api import get_missing_data
+from etl.youtube_api import create_cat_file
 from etl.imdb_api import get_genre
 from etl.logger import get_logger
 from etl.config import loadconfig
@@ -156,6 +157,11 @@ def load_data(data: pd.DataFrame) -> int:
 
     items = len(data[(data["to_insert"])])
     logger.info(f"{items} item(s) to add in the database")
+
+    # Create YouTube categories file if it doesn't exist
+    cat_file = os.path.join(os.path.expanduser(
+        conf["global"]["data_path"]), conf["youtube"]["cat_file"])
+    create_cat_file(cat_file)
 
     # Convert the relevant rows in the dataframe to list format
     data_list = data[data.to_insert].values.tolist()

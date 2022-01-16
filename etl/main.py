@@ -8,58 +8,10 @@ from etl.logger import get_logger
 logger = get_logger("main")
 
 
-def set_environment():
-    '''
-    Function to set up environment
-    '''
-    conf = loadconfig()
-
-    # User data path
-    data_path = os.path.expanduser(conf["global"]["data_path"])
-    # Path to source files
-    curr_path = os.path.dirname(os.path.abspath(__file__))
-
-    # If user data path does not exist, create the structure
-    if not os.path.exists(data_path):
-        logger.info("etl/ datapath missing, setting up new directory")
-        os.mkdir(data_path)
-        os.mkdir(os.path.join(data_path, "config/"))
-        os.mkdir(os.path.join(data_path, "data/"))
-        os.mkdir(os.path.join(data_path, "data/logs/"))
-        logger.info("User datapath structure created")
-    else:
-        logger.info("User datapath already exists")
-
-    # If the config file is not in the usr data path, create a symlink
-    if not os.path.exists(os.path.join(data_path, "config/config.yaml")):
-        logger.info("Configuration file missing, setting one up")
-
-        # Creating symbolic link
-        os.symlink(os.path.join(curr_path, "config/config.yaml"),
-                   os.path.join(data_path, "config/config.yaml"))
-        logger.info("Configuration file link setup success")
-    else:
-        logger.info("Configuration file already exists")
-
-    # If the log file is not in the usr data path, create a symlink
-    if not os.path.exists(os.path.join(data_path, "data/logs/etl.log")):
-        logger.info("Log file missing, setting one up")
-
-        # Creating symbolic link
-        os.symlink(os.path.join(curr_path, "data/logs/etl.log"),
-                   os.path.join(data_path, "data/logs/etl.log"))
-        logger.info("Log file link setup success")
-    else:
-        logger.info("Log file already exists")
-
-
 def full_run():
     '''
     Function to execute the full ETL cycle
     '''
-
-    logger.info("Going to check (and set) the environment first")
-    set_environment()
 
     conf = loadconfig()
 
@@ -81,7 +33,7 @@ def full_run():
             logger.error(
                 f"Please copy the data file for {service} and confirm")
             logger.error("its name is in the ")
-            logger.error(f"{data_path}/config/config.yaml file")
+            logger.error(f"{data_path}config/config.yaml file")
             continue
 
         logger.info(f"Going to transform {service} data")

@@ -1,5 +1,4 @@
 from .main import full_run
-from .main import set_environment
 from .extract import extract_data
 from .transform import transform_data
 from .load import load_data

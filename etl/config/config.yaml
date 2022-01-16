@@ -20,7 +20,7 @@ youtube:
   handler: True
   
   # Google API key
-  api_key: GOOGLE_API_KEY_GOES_HERE
+  api: api_key.txt
 
   # Path for YouTube data
   history_file: yt_history.html

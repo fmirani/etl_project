@@ -11,13 +11,46 @@ from etl.logger import get_logger
 logger = get_logger("youtube")
 
 
+def get_api_key() -> str:
+
+    conf = loadconfig()
+    api_path = os.path.expanduser(conf["global"]["data_path"])
+    api_file = os.path.join(api_path, conf["youtube"]['api'])
+
+    # Return empty strings if the api file does not exist
+    if not os.path.exists(api_file):
+        logger.error("Missing file: ", api_file)
+        logger.error("Please create an api file")
+        return("")
+
+    with open(api_file, "r") as f:
+        api_key = f.readline()
+
+    if api_key == "YOUTUBE_API_KEY_GOES_HERE" or len(api_key) < 5:
+        logger.error("Incorrect API. Please set correct API in the file")
+        return("")
+
+    return(api_key)
+
+
 def create_cat_file(cfile: str) -> None:
     '''
     Function to create a video Categories file
     '''
-    logger.warning("Youtube categories file to be created now")
-    conf = loadconfig()
-    api_key = conf["youtube"]["api_key"]
+
+    # No need to create a new file, one exists already
+    if os.path.exists(cfile):
+        logger.info("YouTube categories file exists already")
+        return
+
+    logger.info("Creating a new YouTube categories file")
+
+    api_key = get_api_key()
+
+    if len(api_key) == "":
+        return
+
+    logger.info(f"YouTube api_key: {api_key}")
 
     # Build Google API instance
     youtube = build("youtube", "v3", developerKey=api_key)
@@ -48,20 +81,18 @@ def get_missing_data(link: str) -> tuple[str, str]:
     '''
     Function to fill missing data from YouTube
     '''
-    curr_path = os.path.dirname(os.path.abspath(__file__))
     conf = loadconfig()
-
-    cat_file = os.path.join(curr_path, conf["youtube"]["cat_file"])
-    api_key = conf["youtube"]["api_key"]
-
-    # If YouTube categroty file does not exist, create it
-    if not os.path.exists(cat_file):
-        logger.warning("YouTube categories file not found.")
-        create_cat_file(cat_file)
+    cat_file = os.path.join(os.path.expanduser(
+        conf["global"]["data_path"]), conf["youtube"]["cat_file"])
 
     # Load YouTube categroty file
     with open(cat_file) as jfile:
         cats = json.load(jfile)
+
+    api_key = get_api_key()
+
+    if len(api_key) == "":
+        return("", "")
 
     # Create a "build" instance
     youtube = build("youtube", "v3", developerKey=api_key)

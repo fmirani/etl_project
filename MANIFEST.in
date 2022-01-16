@@ -1,0 +1,5 @@
+include LICENSE.md
+include README.md
+include etl/config/config.yaml
+include etl/data/api_key.txt
+include etl/data/logs/etl.log

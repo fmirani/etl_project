@@ -5,7 +5,7 @@ from etl.load import load_data
 from etl.config import loadconfig
 from etl.logger import get_logger
 
-logger = get_logger("mainfile")
+logger = get_logger("main")
 
 
 def set_environment():
@@ -78,6 +78,10 @@ def full_run():
 
         if len(s) < 1 or len(f) < 1:
             logger.error(f"Could not locate file for {service}")
+            logger.error(
+                f"Please copy the data file for {service} and confirm")
+            logger.error("its name is in the ")
+            logger.error(f"{data_path}config/config.yaml file")
             continue
 
         logger.info(f"Going to transform {service} data")
