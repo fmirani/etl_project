@@ -2,6 +2,7 @@ import os
 import json
 import time
 import string
+from typing import Tuple, Any
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from etl.config import loadconfig
@@ -76,14 +77,15 @@ def create_cat_file(cfile: str) -> None:
     with open(cfile, "w") as f:
         json.dump(dict, f)
 
+    logger.info(f"YouTube categories file created")
 
-def get_missing_data(link: str) -> tuple[str, str]:
+
+def get_missing_data(link: str) -> Tuple[Any, Any]:
     '''
     Function to fill missing data from YouTube
     '''
-    conf = loadconfig()
-    cat_file = os.path.join(os.path.expanduser(
-        conf["global"]["data_path"]), conf["youtube"]["cat_file"])
+    path = os.path.dirname(os.path.abspath(__file__))
+    cat_file = os.path.join(path, "../../config/cats.json")
 
     # Load YouTube categroty file
     with open(cat_file) as jfile:
@@ -92,7 +94,8 @@ def get_missing_data(link: str) -> tuple[str, str]:
     api_key = get_api_key()
 
     if len(api_key) == "":
-        return("", "")
+        logger.error(f"Invalid or no API provided")
+        return(1, 1)
 
     # Create a "build" instance
     youtube = build("youtube", "v3", developerKey=api_key)

@@ -1,6 +1,7 @@
 import os
 import sqlite3 as sqlite
 import pandas as pd
+from typing import List, Tuple
 from etl.youtube_api import get_missing_data
 from etl.youtube_api import create_cat_file
 from etl.imdb_api import get_genre
@@ -12,10 +13,14 @@ from concurrent.futures import ThreadPoolExecutor
 logger = get_logger("load")
 
 
-def exec_select_query(item: pd.DataFrame, cursor: object) -> bool:
+def exec_select_query(item: pd.Series) -> bool:
     '''
     Function to set up the SELECT query
     '''
+
+    # Connect to the database and create a cursor object
+    conn = connect_db()
+    cursor = conn.cursor()  # type: ignore
 
     timestamp = str(item["Timestamp"])
     link = item["Link"]
@@ -34,30 +39,35 @@ def exec_select_query(item: pd.DataFrame, cursor: object) -> bool:
         else:  # Type is TV Series
             query = "SELECT * FROM watched "\
                 "WHERE timestamp = ? AND vname = ? AND episode = ?"
-            values = (timestamp, name, episode)
+            values = (timestamp, name, episode)  # type: ignore
 
-    try:  # to execute SELECT query
-        cursor.execute(query, values)
-        record = cursor.fetchall()
-        logger.debug("Select query successful")
-    except Exception as err:
-        logger.error(f"ERROR: {err}")
-        logger.error("Unable to execute SELECT query.")
-        exit()
+    cursor.execute(query, values)
+    record = cursor.fetchall()
+    logger.debug("Select query successful")
+
+    insert = True
 
     # If SELECT query returns any result(s),
     # no need to INSERT
     if len(record) > 0:
         logger.debug(f"But this item already exists in the database")
-        return(False)
+        insert = False
 
-    return(True)
+    cursor.close()
+    conn.close()    # type: ignore
+    return(insert)
 
 
-def get_insert_query(item) -> tuple[str, str]:
+def exec_insert_query(item: List[str]) -> bool:
     '''
     Function to set up the INSERT query
+    It receives an iterable object of 8 elements (0-7)
+    and return a boolean value
     '''
+
+    # Connect to the database and create a cursor object
+    conn = connect_db()
+    cursor = conn.cursor()  # type: ignore
 
     # Not proud of this but it is what it is :)
     timestamp = str(item[0])
@@ -79,20 +89,24 @@ def get_insert_query(item) -> tuple[str, str]:
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
     values = (timestamp, source, _type, name, season, episode, cat, link)
 
-    return(query, values)
+    cursor.execute(query, values)
+    logger.debug("Insert query successful")
+
+    cursor.close()
+    conn.close()    # type: ignore
+    return(True)
 
 
-def create_database(db_name: str) -> None:
+def create_db(db_name: str) -> None:
+    '''
+    Function to create a new table called 'watched'
+    '''
 
-    logger.info("Creating and setting up a new database")
+    logger.info("Creating and setting up a new database named 'watched'")
 
-    try:  # to connect to the database
-        conn = sqlite.connect(db_name)
-        logger.info(f"Database {conn} connected")
-    except Exception as err:
-        logger.error(f"Unable to connect to the Database: {err}")
-        logger.error("Please check the configuration in the yaml file.")
-        exit(1)
+    conn = sqlite.connect(db_name)
+    cursor = conn.cursor()
+    logger.info(f"Database {conn} connected")
 
     # CREATE TABLE query
     query = 'CREATE TABLE watched '\
@@ -106,19 +120,32 @@ def create_database(db_name: str) -> None:
         'category CHARACTER VARYING(255), '\
         'vlink category CHARACTER VARYING(355) );'
 
-    # Create a cursor to perform operations
-    cursor = conn.cursor()
-
-    try:  # to execute CREATE TABLE query
-        cursor.execute(query)
-        logger.debug("CREATE TABLE query successful")
-    except Exception as err:
-        logger.error(f"ERROR: {err}")
-        logger.error("Unable to create table in the datebase.")
-        exit(1)
+    # Execute CREATE TABLE query
+    cursor.execute(query)
+    logger.debug("CREATE TABLE query successful")
 
     cursor.close()
     conn.close()
+
+
+def connect_db() -> object:
+    '''
+    This function connects to the database and returns
+    and connection object back to the caller
+    '''
+
+    conf = loadconfig()
+    data_path = os.path.expanduser(conf["global"]["data_path"])
+    db_name = os.path.join(data_path, conf["database"]["name"])
+
+    if not os.path.exists(db_name):
+        logger.info(f"No database found at '{db_name}'")
+        create_db(db_name)
+
+    conn = sqlite.connect(db_name)
+    logger.info(f"Database {conn} connected")
+
+    return(conn)
 
 
 def load_data(data: pd.DataFrame) -> int:
@@ -130,37 +157,18 @@ def load_data(data: pd.DataFrame) -> int:
     4. returns the number of items added to the db
     '''
 
-    conf = loadconfig()
-    data_path = os.path.expanduser(conf["global"]["data_path"])
-    db_name = os.path.join(data_path, conf["database"]["name"])
-
-    if not os.path.exists(db_name):
-        logger.info(f"No database found at '{db_name}'")
-        create_database(db_name)
-
-    try:  # to connect to the database
-        conn = sqlite.connect(db_name)
-        logger.info(f"Database {conn} connected")
-    except Exception as err:
-        logger.error(f"Unable to connect to the Database: {err}")
-        logger.error("Please check the configuration in the yaml file.")
-        return 0
-
-    # Create a cursor to perform operations
-    cursor = conn.cursor()
-
-    # Apply exec_select_query to all the row of the dataframe
+    # Apply exec_select_query to all the rows of the dataframe
     # exec_select_query returns:
     # True -> if this item needs to be added in the database
     # False -> if the item already exists in the database
-    data["to_insert"] = data.apply(exec_select_query, args=(cursor,), axis=1)
+    data["to_insert"] = data.apply(exec_select_query, axis=1)
 
     items = len(data[(data["to_insert"])])
     logger.info(f"{items} item(s) to add in the database")
 
     # Create YouTube categories file if it doesn't exist
-    cat_file = os.path.join(os.path.expanduser(
-        conf["global"]["data_path"]), conf["youtube"]["cat_file"])
+    path = os.path.dirname(os.path.abspath(__file__))
+    cat_file = os.path.join(path, "../../config/cats.json")
     create_cat_file(cat_file)
 
     # Convert the relevant rows in the dataframe to list format
@@ -169,40 +177,13 @@ def load_data(data: pd.DataFrame) -> int:
     # Starting a context manager to handle parallel threads.
     # Passing each row of the dataframe to get_insert_query
     # in a separate thread.
-    logger.info("Starting context manager for threading")
+    logger.info("Starting context manager for multi-threading")
     with ThreadPoolExecutor(max_workers=5) as executor:
-        p_queries = zip(executor.map(
-            get_insert_query, data_list))
+        inserts = executor.map(exec_insert_query, data_list)
 
     logger.info("Out of context manager now")
 
-    list_queries = list(p_queries)
-
-    added: int = 0
-    for tuple_query in list_queries:
-        for query in tuple_query:
-            # No query to execute, continue if true
-            if len(query) < 1:
-                logger.debug("No query to run for INSERT")
-                continue
-
-            try:  # to execute INSERT query
-                cursor.execute(query[0], query[1])
-                logger.debug("Insert query successful")
-                added += 1
-            except Exception as err:
-                logger.error(f"ERROR: {err}")
-                logger.error("Unable to execute INSERT query.")
-                continue
-        # Commit in batches of 100 to be on the safe side
-        if added % 100 == 0:
-            conn.commit()
-
-    conn.commit()
+    added = sum(map(lambda x: x, list(inserts)))
     logger.info(f"{added} items added in the database")
-
-    cursor.close()
-    conn.close()
-    logger.info("PostgreSQL connection is now closed")
 
     return(added)

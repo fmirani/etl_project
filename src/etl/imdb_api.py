@@ -11,13 +11,8 @@ def get_genre(name: str) -> str:
     '''
     genres = ""
 
-    try:  # to create an instance of the IMDb class
-        logger.debug("Creating a new IMDB instance")
-        ia = IMDb()
-        logger.debug("A new IMDB instance created")
-    except Exception as err:
-        logger.debug(f"IMDb instance failed: {err}")
-        return(genres)
+    ia = IMDb()
+    logger.debug("A new IMDB instance created")
 
     # Search the title
     logger.debug(f"Searching name: {name}")

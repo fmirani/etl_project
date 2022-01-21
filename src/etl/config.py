@@ -1,14 +1,15 @@
 import os
 import yaml
+from typing import Any
 
 
-def loadconfig() -> dict:
+def loadconfig() -> Any:
     '''
     Function to load the configuration from the
     filename in the function argument
     '''
     path = os.path.dirname(os.path.abspath(__file__))
-    filename = os.path.join(path, "config/config.yaml")
+    filename = os.path.join(path, "../../config/config.yaml")
 
     if not os.path.exists(filename):
         raise OSError("Config file 'config.yaml' not found.")
@@ -17,3 +18,8 @@ def loadconfig() -> dict:
         config = yaml.safe_load(f)
 
     return(config)
+
+
+if __name__ == "__main__":
+    conf = loadconfig()
+    print(conf)

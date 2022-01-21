@@ -1,11 +1,12 @@
 import os
+from typing import Tuple
 from etl.logger import get_logger
 
 
 logger = get_logger("extract")
 
 
-def extract_data(service: str, data_file: str) -> tuple[str, str]:
+def extract_data(service: str, data_file: str) -> Tuple[str, str]:
     '''
     Function to orchestrate the operation
     1. fetch data from latest files

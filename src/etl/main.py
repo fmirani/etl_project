@@ -8,7 +8,7 @@ from etl.logger import get_logger
 logger = get_logger("main")
 
 
-def full_run():
+def full_run() -> None:
     '''
     Function to execute the full ETL cycle
     '''

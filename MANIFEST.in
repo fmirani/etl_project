@@ -1,5 +1,10 @@
 include LICENSE.md
 include README.md
-include etl/config/config.yaml
-include etl/data/api_key.txt
-include etl/data/logs/etl.log
+pyproject.toml
+requirements.txt
+setup.cfg
+setup.py
+include config/*
+include logs/*
+include data/yt_sample.html
+include data/nf_sample.csv
