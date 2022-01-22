@@ -1,12 +1,11 @@
 import os
 import sqlite3 as sqlite
 import pandas as pd
-from typing import List, Tuple
+from typing import List
+from etl.main import ETL
 from etl.youtube_api import get_missing_data
-from etl.youtube_api import create_cat_file
 from etl.imdb_api import get_genre
 from etl.logger import get_logger
-from etl.config import loadconfig
 from concurrent.futures import ThreadPoolExecutor
 
 
@@ -19,8 +18,9 @@ def exec_select_query(item: pd.Series) -> bool:
     '''
 
     # Connect to the database and create a cursor object
-    conn = connect_db()
-    cursor = conn.cursor()  # type: ignore
+    instance = ETL()
+    conn = sqlite.connect(instance.get_db())
+    cursor = conn.cursor()
 
     timestamp = str(item["Timestamp"])
     link = item["Link"]
@@ -54,7 +54,7 @@ def exec_select_query(item: pd.Series) -> bool:
         insert = False
 
     cursor.close()
-    conn.close()    # type: ignore
+    conn.close()
     return(insert)
 
 
@@ -66,8 +66,9 @@ def exec_insert_query(item: List[str]) -> bool:
     '''
 
     # Connect to the database and create a cursor object
-    conn = connect_db()
-    cursor = conn.cursor()  # type: ignore
+    instance = ETL()
+    conn = sqlite.connect(instance.get_db())
+    cursor = conn.cursor()
 
     # Not proud of this but it is what it is :)
     timestamp = str(item[0])
@@ -84,6 +85,10 @@ def exec_insert_query(item: List[str]) -> bool:
     else:
         cat = get_genre(name)
 
+    if isinstance(name, int) or isinstance(cat, int):
+        logger.error(f"INSERT query cancelled due to invalid API")
+        return(False)
+
     query = "INSERT INTO watched "\
         "(timestamp, source, type, vname, season, episode, category, vlink) "\
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
@@ -92,8 +97,9 @@ def exec_insert_query(item: List[str]) -> bool:
     cursor.execute(query, values)
     logger.debug("Insert query successful")
 
+    conn.commit()
     cursor.close()
-    conn.close()    # type: ignore
+    conn.close()
     return(True)
 
 
@@ -124,28 +130,9 @@ def create_db(db_name: str) -> None:
     cursor.execute(query)
     logger.debug("CREATE TABLE query successful")
 
+    conn.commit()
     cursor.close()
     conn.close()
-
-
-def connect_db() -> object:
-    '''
-    This function connects to the database and returns
-    and connection object back to the caller
-    '''
-
-    conf = loadconfig()
-    data_path = os.path.expanduser(conf["global"]["data_path"])
-    db_name = os.path.join(data_path, conf["database"]["name"])
-
-    if not os.path.exists(db_name):
-        logger.info(f"No database found at '{db_name}'")
-        create_db(db_name)
-
-    conn = sqlite.connect(db_name)
-    logger.info(f"Database {conn} connected")
-
-    return(conn)
 
 
 def load_data(data: pd.DataFrame) -> int:
@@ -157,19 +144,29 @@ def load_data(data: pd.DataFrame) -> int:
     4. returns the number of items added to the db
     '''
 
+    # Check if there exists a database already
+    # If not, create a new one
+    instance = ETL()
+    db_name = instance.get_db()
+    if not os.path.exists(db_name):
+        logger.info(f"No database found at '{db_name}'")
+        logger.info(f"Setting up a new database at '{db_name}'")
+        create_db(db_name)
+
+    # Check if there is any data in dataframe to load in the DB
+    if data.shape[0] == 0:
+        logger.warning("No data to add to the database")
+        return 0
+
     # Apply exec_select_query to all the rows of the dataframe
     # exec_select_query returns:
     # True -> if this item needs to be added in the database
     # False -> if the item already exists in the database
+
     data["to_insert"] = data.apply(exec_select_query, axis=1)
 
     items = len(data[(data["to_insert"])])
     logger.info(f"{items} item(s) to add in the database")
-
-    # Create YouTube categories file if it doesn't exist
-    path = os.path.dirname(os.path.abspath(__file__))
-    cat_file = os.path.join(path, "../../config/cats.json")
-    create_cat_file(cat_file)
 
     # Convert the relevant rows in the dataframe to list format
     data_list = data[data.to_insert].values.tolist()

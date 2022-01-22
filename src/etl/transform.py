@@ -1,8 +1,8 @@
 import pandas as pd
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup as bs
-from etl.config import loadconfig
 from etl.logger import get_logger
+from etl.main import ETL
 
 
 logger = get_logger("transform")
@@ -27,9 +27,10 @@ def transform_youtube_data(filename: str) -> pd.DataFrame:
     4. Populate the dataframe
     '''
     logger.info("Transforming YouTube data now")
-    conf = loadconfig()
-    simulated = conf["simulation"]["simulated"]
-    simulate_offset = conf["simulation"]["simulate_offset"]
+
+    instance = ETL()
+    simulated = instance.get_sim_status()
+    simulate_offset = instance.get_simul_days()
 
     # Create a new dataframe
     data = pd.DataFrame(
@@ -78,9 +79,10 @@ def transform_netflix_data(filename: str) -> pd.DataFrame:
     4. Populate the dataframe
     '''
     logger.info("Transforming Netflix data now")
-    conf = loadconfig()
-    simulated = conf["simulation"]["simulated"]
-    simulate_offset = conf["simulation"]["simulate_offset"]
+
+    instance = ETL()
+    simulated = instance.get_sim_status()
+    simulate_offset = instance.get_simul_days()
 
     # Create a new dataframe
     data = pd.DataFrame(
