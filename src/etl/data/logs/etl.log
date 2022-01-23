@@ -4028,3 +4028,13 @@
 2022-01-23 14:58:50,801 | INFO | load.py | load_data | 5 items added in the database
 2022-01-23 14:58:50,803 | INFO | transform.py | transform_youtube_data | Transforming YouTube data now
 2022-01-23 14:58:50,807 | INFO | transform.py | transform_netflix_data | Transforming Netflix data now
+2022-01-23 18:07:24,533 | INFO | extract.py | extract_data | Extracting data for youtube from /home/farhan/workspace/etl_project/tests/../src/etl/data/yt_sample.html..
+2022-01-23 18:07:24,533 | INFO | extract.py | extract_data | Extracting data for netflix from /home/farhan/workspace/etl_project/tests/../src/etl/data/nf_sample.csv..
+2022-01-23 18:07:24,533 | INFO | extract.py | extract_data | Extracting data for wrong_service from /home/farhan/workspace/etl_project/tests/../src/etl/data/yt_sample.html..
+2022-01-23 18:07:24,534 | ERROR | extract.py | extract_data | Incorrect service name. Expecting 'youtube' or 'netflix', provided wrong_service
+2022-01-23 18:07:24,534 | INFO | extract.py | extract_data | Extracting data for wrong_service from /home/farhan/workspace/etl_project/tests/../src/etl/data/nf_sample.csv..
+2022-01-23 18:07:24,534 | ERROR | extract.py | extract_data | Incorrect service name. Expecting 'youtube' or 'netflix', provided wrong_service
+2022-01-23 18:07:24,534 | INFO | extract.py | extract_data | Extracting data for youtube from wring_file.html..
+2022-01-23 18:07:24,534 | ERROR | extract.py | extract_data | 'youtube' data file not found
+2022-01-23 18:07:24,534 | INFO | extract.py | extract_data | Extracting data for netflix from wrong_file.csv..
+2022-01-23 18:07:24,534 | ERROR | extract.py | extract_data | 'netflix' data file not found
