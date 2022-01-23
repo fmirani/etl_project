@@ -2,11 +2,12 @@ import os
 
 
 PATH = os.path.dirname(os.path.abspath(__file__))
+# os.environ["API_KEY"] = "API_KEY_GOES_INSIDE_THESE_QUOTES"
 
 
 class ETL:
     api_key: str = ""
-    db_name: str = os.path.join(PATH, "../../data/database.db")
+    db_name: str = os.path.join(PATH, "data/database.db")
 
     service: str = ""
     filename: str = ""

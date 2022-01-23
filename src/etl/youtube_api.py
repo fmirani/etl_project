@@ -2,13 +2,13 @@ import os
 import json
 import time
 import string
+from dotenv import load_dotenv
 from typing import Tuple, Any
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from etl.main import ETL
 from etl.logger import get_logger
 
-
+load_dotenv()
 logger = get_logger("youtube")
 
 
@@ -17,8 +17,7 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
     Function to fill missing data from YouTube
     '''
 
-    instance = ETL()
-    api_key = instance.get_api()
+    api_key = str(os.getenv("API_KEY"))
 
     if len(api_key) != 39:
         logger.error(f"Invalid API key or API not set")
@@ -26,7 +25,7 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
 
     # Load YouTube categroty file in 'cats'
     path = os.path.dirname(os.path.abspath(__file__))
-    cat_file = os.path.join(path, "../../config/cats.json")
+    cat_file = os.path.join(path, "data/cats.json")
     with open(cat_file) as jfile:
         cats = json.load(jfile)
 

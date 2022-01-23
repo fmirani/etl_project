@@ -9,7 +9,7 @@ def get_logger(log: str):   # type: ignore
     '''
 
     path = os.path.dirname(os.path.abspath(__file__))
-    log_file = os.path.join(path, "../../logs/etl.log")
+    log_file = os.path.join(path, "data/logs/etl.log")
 
     logger = logging.getLogger(log)
     logger.setLevel(logging.DEBUG)

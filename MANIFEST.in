@@ -1,10 +1,8 @@
 include LICENSE.md
 include README.md
-pyproject.toml
-requirements.txt
-setup.cfg
-setup.py
-include config/*
-include logs/*
-include data/yt_sample.html
-include data/nf_sample.csv
+include pyproject.toml
+include requirements.txt
+include setup.cfg
+include setup.py
+include src/etl/data/*
+include src/etl/data/logs/*
