@@ -1,10 +1,11 @@
 .coverage
 .env
-/dist/
-/.tox/
-/__pycache__/
 /.mypy_cache/
 /.pytest_cache/
-/venv/
+/.tox/
+/__pycache__/
+/dist/
 /src/etl.egg-info/
 /src/etl/__pycache__/
+/tests/__pycache__/
+/venv/
