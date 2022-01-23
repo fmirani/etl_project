@@ -5,7 +5,6 @@ certifi==2021.10.8
 charset-normalizer==2.0.10
 coverage==6.2
 distlib==0.3.4
--e git+https://github.com/fmirani/etl_project.git@72148f071150943553ed5278edf536e011223895#egg=etl
 filelock==3.4.2
 google-api-core==2.4.0
 google-api-python-client==2.36.0
