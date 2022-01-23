@@ -3,7 +3,6 @@
 test.py
 /dist/
 /.tox/
-/.github/
 /__pycache__/
 /.mypy_cache/
 /.pytest_cache/
