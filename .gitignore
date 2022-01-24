@@ -4,6 +4,7 @@
 /.pytest_cache/
 /.tox/
 /__pycache__/
+/build/
 /dist/
 /src/etl.egg-info/
 /src/etl/__pycache__/
