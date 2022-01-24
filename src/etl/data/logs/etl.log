@@ -4038,3 +4038,200 @@
 2022-01-23 18:07:24,534 | ERROR | extract.py | extract_data | 'youtube' data file not found
 2022-01-23 18:07:24,534 | INFO | extract.py | extract_data | Extracting data for netflix from wrong_file.csv..
 2022-01-23 18:07:24,534 | ERROR | extract.py | extract_data | 'netflix' data file not found
+2022-01-24 19:51:34,150 | INFO | transform.py | transform_youtube_data | Transforming YouTube data now
+2022-01-24 19:51:34,180 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:34,307 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:34,307 | DEBUG | youtube_api.py | get_missing_data | Name: PAW Patrol The Movie: A Day in Adventure City  Help Marshall and Pups get ready for the day!, Categories: Gaming
+2022-01-24 19:51:34,314 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:34,397 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:34,397 | DEBUG | youtube_api.py | get_missing_data | Name: Coldplay - Paradise (Official Video), Categories: Music
+2022-01-24 19:51:34,405 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:34,486 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:34,486 | DEBUG | youtube_api.py | get_missing_data | Name: Paw Patrol : Mighty Pups Coloring Pages for Kids, Categories: Entertainment
+2022-01-24 19:51:34,492 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:34,591 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:34,591 | DEBUG | youtube_api.py | get_missing_data | Name: Mark Ronson - Uptown Funk (Official Video) ft. Bruno Mars, Categories: Music
+2022-01-24 19:51:34,595 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:34,679 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:34,679 | DEBUG | youtube_api.py | get_missing_data | Name: Maroon 5 - Girls Like You ft. Cardi B (Volume 2) (Official Music Video), Categories: Music
+2022-01-24 19:51:34,680 | INFO | transform.py | transform_netflix_data | Transforming Netflix data now
+2022-01-24 19:51:34,724 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:34,725 | DEBUG | imdb_api.py | get_genre | Searching name: Don't Look Up
+2022-01-24 19:51:35,581 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:35,581 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:37,875 | DEBUG | imdb_api.py | get_genre | Title found: Don't Look Up
+2022-01-24 19:51:37,876 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:37,876 | DEBUG | imdb_api.py | get_genre | Searching name: Death to 2021
+2022-01-24 19:51:38,685 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:38,685 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:40,551 | DEBUG | imdb_api.py | get_genre | Title found: Death to 2021
+2022-01-24 19:51:40,552 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:40,552 | DEBUG | imdb_api.py | get_genre | Searching name: The Unforgivable
+2022-01-24 19:51:41,331 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:41,332 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:43,358 | DEBUG | imdb_api.py | get_genre | Title found: The Unforgivable
+2022-01-24 19:51:43,359 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:43,359 | DEBUG | imdb_api.py | get_genre | Searching name: Superstore
+2022-01-24 19:51:44,208 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:44,208 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:46,486 | DEBUG | imdb_api.py | get_genre | Title found: Superstore
+2022-01-24 19:51:46,487 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:46,487 | DEBUG | imdb_api.py | get_genre | Searching name: Superstore
+2022-01-24 19:51:47,161 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:47,161 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:49,874 | DEBUG | imdb_api.py | get_genre | Title found: Superstore
+2022-01-24 19:51:49,876 | INFO | extract.py | extract_data | Extracting data for youtube from /home/farhan/workspace/etl_project/tests/../src/etl/data/yt_sample.html..
+2022-01-24 19:51:49,876 | INFO | extract.py | extract_data | Extracting data for netflix from /home/farhan/workspace/etl_project/tests/../src/etl/data/nf_sample.csv..
+2022-01-24 19:51:49,876 | INFO | extract.py | extract_data | Extracting data for wrong_service from /home/farhan/workspace/etl_project/tests/../src/etl/data/yt_sample.html..
+2022-01-24 19:51:49,876 | ERROR | extract.py | extract_data | Incorrect service name. Expecting 'youtube' or 'netflix', provided wrong_service
+2022-01-24 19:51:49,876 | INFO | extract.py | extract_data | Extracting data for wrong_service from /home/farhan/workspace/etl_project/tests/../src/etl/data/nf_sample.csv..
+2022-01-24 19:51:49,876 | ERROR | extract.py | extract_data | Incorrect service name. Expecting 'youtube' or 'netflix', provided wrong_service
+2022-01-24 19:51:49,876 | INFO | extract.py | extract_data | Extracting data for youtube from wring_file.html..
+2022-01-24 19:51:49,877 | ERROR | extract.py | extract_data | 'youtube' data file not found
+2022-01-24 19:51:49,877 | INFO | extract.py | extract_data | Extracting data for netflix from wrong_file.csv..
+2022-01-24 19:51:49,877 | ERROR | extract.py | extract_data | 'netflix' data file not found
+2022-01-24 19:51:49,878 | INFO | load.py | create_db | Creating and setting up a new database named 'watched'
+2022-01-24 19:51:49,878 | INFO | load.py | create_db | Database <sqlite3.Connection object at 0x7f5d6e882120> connected
+2022-01-24 19:51:49,882 | DEBUG | load.py | create_db | CREATE TABLE query successful
+2022-01-24 19:51:49,884 | INFO | load.py | create_db | Creating and setting up a new database named 'watched'
+2022-01-24 19:51:49,884 | INFO | load.py | create_db | Database <sqlite3.Connection object at 0x7f5d6e882120> connected
+2022-01-24 19:51:49,889 | DEBUG | load.py | create_db | CREATE TABLE query successful
+2022-01-24 19:51:49,889 | INFO | transform.py | transform_youtube_data | Transforming YouTube data now
+2022-01-24 19:51:49,895 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:49,895 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:49,896 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:49,896 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:49,896 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:49,915 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:49,918 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:49,937 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:50,001 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:50,007 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:50,090 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:50,090 | DEBUG | youtube_api.py | get_missing_data | Name: PAW Patrol The Movie: A Day in Adventure City  Help Marshall and Pups get ready for the day!, Categories: Gaming
+2022-01-24 19:51:50,091 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:50,093 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:50,093 | DEBUG | youtube_api.py | get_missing_data | Name: Coldplay - Adventure Of A Lifetime (Official Video), Categories: Music
+2022-01-24 19:51:50,100 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:50,100 | DEBUG | youtube_api.py | get_missing_data | Name: Paw Patrol Vehicle Upgrades get painted the Wrong Colors!, Categories: Film & Animation
+2022-01-24 19:51:50,101 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:50,112 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:50,112 | DEBUG | youtube_api.py | get_missing_data | Name: The Weeknd - Blinding Lights (Official Audio), Categories: Music
+2022-01-24 19:51:50,113 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:50,114 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:50,114 | DEBUG | youtube_api.py | get_missing_data | Name: Mark Ronson - Uptown Funk (Official Video) ft. Bruno Mars, Categories: Music
+2022-01-24 19:51:50,123 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:50,145 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:50,150 | INFO | transform.py | transform_netflix_data | Transforming Netflix data now
+2022-01-24 19:51:50,161 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:50,161 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:50,162 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:50,162 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:50,163 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:50,169 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:50,170 | DEBUG | imdb_api.py | get_genre | Searching name: Death to 2021
+2022-01-24 19:51:50,175 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:50,175 | DEBUG | imdb_api.py | get_genre | Searching name: Superstore
+2022-01-24 19:51:50,176 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:50,178 | DEBUG | imdb_api.py | get_genre | Searching name: Superstore
+2022-01-24 19:51:50,179 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:50,179 | DEBUG | imdb_api.py | get_genre | Searching name: Superstore
+2022-01-24 19:51:50,180 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:50,180 | DEBUG | imdb_api.py | get_genre | Searching name: Don't Look Up
+2022-01-24 19:51:50,939 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:50,939 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:51,071 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:51,072 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:51,085 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:51,085 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:51,149 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:51,149 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:51,294 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:51,294 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:53,379 | DEBUG | imdb_api.py | get_genre | Title found: Death to 2021
+2022-01-24 19:51:53,380 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:54,134 | DEBUG | imdb_api.py | get_genre | Title found: Superstore
+2022-01-24 19:51:54,135 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:54,164 | DEBUG | imdb_api.py | get_genre | Title found: Don't Look Up
+2022-01-24 19:51:54,165 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:54,181 | DEBUG | imdb_api.py | get_genre | Title found: Superstore
+2022-01-24 19:51:54,182 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:54,231 | DEBUG | imdb_api.py | get_genre | Title found: Superstore
+2022-01-24 19:51:54,232 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:54,236 | INFO | transform.py | transform_youtube_data | Transforming YouTube data now
+2022-01-24 19:51:54,241 | INFO | load.py | load_data | No database found at '/home/farhan/workspace/etl_project/src/etl/data/database.db'
+2022-01-24 19:51:54,241 | INFO | load.py | load_data | Setting up a new database at '/home/farhan/workspace/etl_project/src/etl/data/database.db'
+2022-01-24 19:51:54,241 | INFO | load.py | create_db | Creating and setting up a new database named 'watched'
+2022-01-24 19:51:54,241 | INFO | load.py | create_db | Database <sqlite3.Connection object at 0x7f5d6e882120> connected
+2022-01-24 19:51:54,246 | DEBUG | load.py | create_db | CREATE TABLE query successful
+2022-01-24 19:51:54,247 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:54,247 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:54,247 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:54,248 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:54,248 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:54,249 | INFO | load.py | load_data | 5 item(s) to add in the database
+2022-01-24 19:51:54,250 | INFO | load.py | load_data | Starting context manager for multi-threading
+2022-01-24 19:51:54,253 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:54,261 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:54,272 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:54,282 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:54,290 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-24 19:51:54,371 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:54,372 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:54,373 | DEBUG | youtube_api.py | get_missing_data | Name: The Weeknd - Blinding Lights (Official Audio), Categories: Music
+2022-01-24 19:51:54,372 | DEBUG | youtube_api.py | get_missing_data | Name: Coldplay - Paradise (Official Video), Categories: Music
+2022-01-24 19:51:54,373 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:54,373 | DEBUG | youtube_api.py | get_missing_data | Name: Mark Ronson - Uptown Funk (Official Video) ft. Bruno Mars, Categories: Music
+2022-01-24 19:51:54,374 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:54,378 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:54,379 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:54,380 | DEBUG | youtube_api.py | get_missing_data | Name: Paw Patrol : Mighty Pups Coloring Pages for Kids, Categories: Entertainment
+2022-01-24 19:51:54,384 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:54,393 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:54,397 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-24 19:51:54,397 | DEBUG | youtube_api.py | get_missing_data | Name: Paw Patrol Vehicle Upgrades get painted the Wrong Colors!, Categories: Film & Animation
+2022-01-24 19:51:54,398 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:54,400 | INFO | load.py | load_data | Out of context manager now
+2022-01-24 19:51:54,400 | INFO | load.py | load_data | 5 items added in the database
+2022-01-24 19:51:54,400 | INFO | transform.py | transform_netflix_data | Transforming Netflix data now
+2022-01-24 19:51:54,409 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:54,410 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:54,410 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:54,410 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:54,410 | DEBUG | load.py | exec_select_query | Select query successful
+2022-01-24 19:51:54,411 | INFO | load.py | load_data | 5 item(s) to add in the database
+2022-01-24 19:51:54,412 | INFO | load.py | load_data | Starting context manager for multi-threading
+2022-01-24 19:51:54,420 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:54,421 | DEBUG | imdb_api.py | get_genre | Searching name: The Unforgivable
+2022-01-24 19:51:54,421 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:54,422 | DEBUG | imdb_api.py | get_genre | Searching name: Superstore
+2022-01-24 19:51:54,422 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:54,423 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:54,423 | DEBUG | imdb_api.py | get_genre | Searching name: Don't Look Up
+2022-01-24 19:51:54,423 | DEBUG | imdb_api.py | get_genre | Searching name: Superstore
+2022-01-24 19:51:54,425 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-24 19:51:54,425 | DEBUG | imdb_api.py | get_genre | Searching name: Superstore
+2022-01-24 19:51:55,768 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:55,768 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:55,784 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:55,785 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:55,846 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:55,846 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:55,863 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:55,863 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:56,005 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-24 19:51:56,005 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-24 19:51:58,698 | DEBUG | imdb_api.py | get_genre | Title found: The Unforgivable
+2022-01-24 19:51:58,699 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:59,117 | DEBUG | imdb_api.py | get_genre | Title found: Superstore
+2022-01-24 19:51:59,118 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:59,435 | DEBUG | imdb_api.py | get_genre | Title found: Superstore
+2022-01-24 19:51:59,436 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:51:59,685 | DEBUG | imdb_api.py | get_genre | Title found: Superstore
+2022-01-24 19:51:59,686 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:52:00,132 | DEBUG | imdb_api.py | get_genre | Title found: Don't Look Up
+2022-01-24 19:52:00,133 | DEBUG | load.py | exec_insert_query | Insert query successful
+2022-01-24 19:52:00,137 | INFO | load.py | load_data | Out of context manager now
+2022-01-24 19:52:00,138 | INFO | load.py | load_data | 5 items added in the database
+2022-01-24 19:52:00,139 | INFO | transform.py | transform_youtube_data | Transforming YouTube data now
+2022-01-24 19:52:00,143 | INFO | transform.py | transform_netflix_data | Transforming Netflix data now
