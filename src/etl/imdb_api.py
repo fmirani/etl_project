@@ -9,15 +9,15 @@ def get_genre(name: str) -> str:
     Function to get genres for Movies/TV Series
     using IMDbPy library
     '''
-    genres = ""
+    genres: str = ""
 
     ia = IMDb()
     logger.debug("A new IMDB instance created")
 
-    # Search the title
     logger.debug(f"Searching name: {name}")
     movies = ia.search_movie(name)
     logger.debug("Search ended")
+
     # Title not found, return empty string
     if len(movies) < 1:
         logger.warning(f"Name: {name} didn't return any results")

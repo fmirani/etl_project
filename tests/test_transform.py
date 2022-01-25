@@ -3,7 +3,7 @@ import pandas as pd
 from etl.transform import transform_data
 
 
-def test_transform_data():
+def test_transform_data() -> None:
 
     path = os.path.dirname(os.path.abspath(__file__))
 
@@ -11,7 +11,7 @@ def test_transform_data():
     nf_history = os.path.join(path, "../src/etl/data/nf_sample.csv")
 
     for item in [["youtube", yt_history], ["netflix", nf_history]]:
-        data = transform_data(item[0], item[1])
+        data: pd.DataFrame = transform_data(item[0], item[1])
         assert isinstance(data, pd.DataFrame)
         assert data.shape[1] == 8
 

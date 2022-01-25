@@ -4,7 +4,7 @@ from etl.imdb_api import get_genre
 from etl.transform import transform_data
 
 
-def test_get_missing_data():
+def test_get_missing_data() -> None:
 
     path = os.path.dirname(os.path.abspath(__file__))
 
@@ -23,7 +23,7 @@ def test_get_missing_data():
                 assert cat == ""
 
 
-def test_get_genre():
+def test_get_genre() -> None:
 
     path = os.path.dirname(os.path.abspath(__file__))
     nf_history = os.path.join(path, "../src/etl/data/nf_sample.csv")
@@ -38,3 +38,4 @@ def test_get_genre():
 
 if __name__ == "__main__":
     test_get_missing_data()
+    test_get_genre()

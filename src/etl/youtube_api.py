@@ -17,7 +17,7 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
     Function to fill missing data from YouTube
     '''
 
-    api_key = str(os.getenv("API_KEY"))
+    api_key: str = str(os.getenv("API_KEY"))
 
     if len(api_key) != 39:
         logger.error(f"Invalid API key or API not set")
@@ -29,14 +29,12 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
     with open(cat_file) as jfile:
         cats = json.load(jfile)
 
-    # Create a "build" instance
     youtube = build("youtube", "v3", developerKey=api_key)
 
     # Extract the video Id from the link
-    id = link.split("v=")[1]
+    id: str = link.split("v=")[1]
 
     logger.debug("Preparing YouTube API call")
-    # Prepare to call videos.list() for "id" filter
     request = youtube.videos().list(
         part="snippet",
         id=id)
@@ -60,10 +58,11 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
         return("", "")
 
     # Fill both columns with info retrieved from YouTube
-    name = response["items"][0]["snippet"]["title"]
-    cat = cats[response["items"][0]["snippet"]["categoryId"]]
+    name: str = response["items"][0]["snippet"]["title"]
+    cat: str = cats[response["items"][0]["snippet"]["categoryId"]]
     logger.debug(f"Name: {name}, Categories: {cat}")
 
     # Had to add this to remove any unprintable chars returned by API call
-    name = ''.join([str(char) for char in name if char in string.printable])
+    name = ''.join([str(char)
+                    for char in name if char in string.printable])
     return(name, cat)

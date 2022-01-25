@@ -32,11 +32,9 @@ def transform_youtube_data(filename: str) -> pd.DataFrame:
     simulated = instance.get_sim_status()
     simulate_offset = instance.get_simul_days()
 
-    # Create a new dataframe
     data = pd.DataFrame(
         columns=["Timestamp", "Source", "Type", "Name", "Season", "Episode", "Category", "Link"])
 
-    # Initialize some empty lists for the dataframe
     link = []
     timestamp = []
 
@@ -84,7 +82,6 @@ def transform_netflix_data(filename: str) -> pd.DataFrame:
     simulated = instance.get_sim_status()
     simulate_offset = instance.get_simul_days()
 
-    # Create a new dataframe
     data = pd.DataFrame(
         columns=["Timestamp", "Source", "Type", "Name", "Season", "Episode", "Category", "Link"])
 
@@ -94,16 +91,14 @@ def transform_netflix_data(filename: str) -> pd.DataFrame:
         nf_data = pd.read_csv(filename)
     except Exception as e:
         logger.error(f"Unable to read csv file '{filename}' : ", e)
-        logger.warning(f"DataFrame does not contain any data")
+        logger.warning(f"File does not contain valid data")
         return(data)
 
     # Import Timestamp column to our datadrame as datetime
-    data["Timestamp"] = pd.to_datetime(nf_data["Date"], format="%m/%d/%y")
-
     # Set "Source" column to "Netflix"
-    data["Source"] = "Netflix"
-
     # Import Name column to our dataframe
+    data["Timestamp"] = pd.to_datetime(nf_data["Date"], format="%m/%d/%y")
+    data["Source"] = "Netflix"
     data["Name"] = nf_data["Title"]
 
     # Keywords to identify if a title is a TV series

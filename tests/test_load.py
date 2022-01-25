@@ -4,7 +4,7 @@ from etl.transform import transform_data
 from etl.load import load_data, create_db, exec_select_query, exec_insert_query
 from concurrent.futures import ThreadPoolExecutor
 
-def test_create_db():
+def test_create_db() -> None:
 
     instance = ETL()
     db_name = instance.get_db()
@@ -22,7 +22,7 @@ def test_create_db():
         os.remove(db_name)
 
 
-def test_queries():
+def test_queries() -> None:
 
     path = os.path.dirname(os.path.abspath(__file__))
     yt_history = os.path.join(path, "../src/etl/data/yt_sample.html")
@@ -54,7 +54,7 @@ def test_queries():
     if os.path.exists(db_name):
         os.remove(db_name)
 
-def test_load_data():
+def test_load_data() -> None:
 
     path = os.path.dirname(os.path.abspath(__file__))
     yt_history = os.path.join(path, "../src/etl/data/yt_sample.html")
@@ -73,4 +73,6 @@ def test_load_data():
 
 
 if __name__ == "__main__":
-    pass
+    test_create_db()
+    test_queries()
+    test_load_data()

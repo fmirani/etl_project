@@ -17,7 +17,6 @@ def exec_select_query(item: pd.Series) -> bool:
     Function to set up the SELECT query
     '''
 
-    # Connect to the database and create a cursor object
     instance = ETL()
     conn = sqlite.connect(instance.get_db())
     cursor = conn.cursor()
@@ -62,15 +61,15 @@ def exec_insert_query(item: List[str]) -> bool:
     '''
     Function to set up the INSERT query
     It receives an iterable object of 8 elements (0-7)
-    and return a boolean value
+    and returns a boolean value
     '''
 
-    # Connect to the database and create a cursor object
     instance = ETL()
     conn = sqlite.connect(instance.get_db())
     cursor = conn.cursor()
 
-    # Not proud of this but it is what it is :)
+    # Not proud of the following,
+    # will one day come back to this to improve it
     timestamp = str(item[0])
     source = item[1]
     _type = item[2]

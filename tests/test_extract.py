@@ -2,7 +2,7 @@ import os
 from etl.extract import extract_data
 
 
-def test_extract_data():
+def test_extract_data() -> None:
 
     path = os.path.dirname(os.path.abspath(__file__))
     yt_history = os.path.join(path, "../src/etl/data/yt_sample.html")
