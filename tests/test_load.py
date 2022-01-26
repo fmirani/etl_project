@@ -4,6 +4,7 @@ from etl.transform import transform_data
 from etl.load import load_data, create_db, exec_select_query, exec_insert_query
 from concurrent.futures import ThreadPoolExecutor
 
+
 def test_create_db() -> None:
 
     instance = ETL()
@@ -14,7 +15,7 @@ def test_create_db() -> None:
         os.remove(db_name)
         assert not os.path.exists(db_name)
 
-    create_db(db_name)
+    create_db()
     assert os.path.exists(db_name)
 
     # Remove any databases created for testing purposes
@@ -31,8 +32,9 @@ def test_queries() -> None:
     instance = ETL()
     db_name = instance.get_db()
 
+    # Create database if it doesn't exist
     if not os.path.exists(db_name):
-        create_db(db_name)
+        create_db()
 
     for item in [["youtube", yt_history], ["netflix", nf_history]]:
 
@@ -43,16 +45,18 @@ def test_queries() -> None:
 
         data["to_insert"] = data.apply(exec_select_query, axis=1)
         if data.shape[0] > 0:
-            assert len(data[data.to_insert == '']) == 0
+            assert len(data[data.to_insert == ""]) == 0
 
         data_list = data[data.to_insert].values.tolist()
 
         with ThreadPoolExecutor(max_workers=5) as executor:
-            inserts = executor.map(exec_insert_query, data_list)
-        assert len(data_list) == len(list(inserts))
+            query_data = executor.map(exec_insert_query, data_list)
+
+        assert len(data_list) == len(list(query_data))
 
     if os.path.exists(db_name):
         os.remove(db_name)
+
 
 def test_load_data() -> None:
 

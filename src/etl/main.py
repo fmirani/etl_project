@@ -1,4 +1,5 @@
 import os
+from typing import Any, Tuple
 
 
 PATH = os.path.dirname(os.path.abspath(__file__))
@@ -15,33 +16,43 @@ class ETL:
     simulation: bool = False
     simul_days: int = 0
 
+    conn: object
+    cur: object
+
     def set_service(self, service: str) -> None:
         ETL.service = service
 
     def get_service(self) -> str:
-        return(ETL.service)
+        return ETL.service
 
     def set_filename(self, filename: str) -> None:
         ETL.filename = filename
 
     def get_filename(self) -> str:
-        return(ETL.filename)
+        return ETL.filename
 
     def set_api(self, api_key: str) -> None:
         ETL.api_key = api_key
 
     def get_api(self) -> str:
-        return(ETL.api_key)
+        return ETL.api_key
 
     def get_db(self) -> str:
-        return(ETL.db_name)
+        return ETL.db_name
 
-    def set_simulation(self, simu: bool=True, days: int=45) -> None:
+    def set_simulation(self, simu: bool = True, days: int = 45) -> None:
         ETL.simulation = simu
         ETL.simul_days = days
 
     def get_sim_status(self) -> bool:
-        return(ETL.simulation)
+        return ETL.simulation
 
     def get_simul_days(self) -> int:
-        return(ETL.simul_days)
+        return ETL.simul_days
+
+    def set_connection(self, conn: object, cur: object) -> None:
+        ETL.conn = conn
+        ETL.cur = cur
+
+    def get_connection(self) -> Tuple[Any, Any]:
+        return (ETL.conn, ETL.cur)

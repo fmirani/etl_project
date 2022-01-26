@@ -5,10 +5,10 @@ logger = get_logger("imdb")
 
 
 def get_genre(name: str) -> str:
-    '''
+    """
     Function to get genres for Movies/TV Series
     using IMDbPy library
-    '''
+    """
     genres: str = ""
 
     ia = IMDb()
@@ -21,7 +21,7 @@ def get_genre(name: str) -> str:
     # Title not found, return empty string
     if len(movies) < 1:
         logger.warning(f"Name: {name} didn't return any results")
-        return(genres)
+        return genres
 
     # Get the ID of the first result
     id = movies[0].movieID
@@ -29,10 +29,10 @@ def get_genre(name: str) -> str:
     # Get the IMDb.movie object from the ID
     logger.debug("Getting Title using ID")
     movie = ia.get_movie(id)
-    logger.debug(f'Title found: {movie}')
+    logger.debug(f"Title found: {movie}")
 
     # Get the genres of the title
     if "genres" in movie.data:
         genres = ", ".join(movie.data["genres"])
 
-    return(genres)
+    return genres

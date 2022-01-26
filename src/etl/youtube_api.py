@@ -13,15 +13,15 @@ logger = get_logger("youtube")
 
 
 def get_missing_data(link: str) -> Tuple[Any, Any]:
-    '''
+    """
     Function to fill missing data from YouTube
-    '''
+    """
 
     api_key: str = str(os.getenv("API_KEY"))
 
     if len(api_key) != 39:
         logger.error(f"Invalid API key or API not set")
-        return(0, 0)
+        return (0, 0)
 
     # Load YouTube categroty file in 'cats'
     path = os.path.dirname(os.path.abspath(__file__))
@@ -35,9 +35,7 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
     id: str = link.split("v=")[1]
 
     logger.debug("Preparing YouTube API call")
-    request = youtube.videos().list(
-        part="snippet",
-        id=id)
+    request = youtube.videos().list(part="snippet", id=id)
 
     try:  # Try to get response
         response = request.execute()
@@ -47,15 +45,14 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
         logger.error(f"Could not retrieve information for: {link}")
         # If the problem is from the remote end
         if err.resp.status in [403, 500, 503]:
-            logger.warning(
-                "Going to sleep for 5 secs and then return empty strings")
+            logger.warning("Going to sleep for 5 secs and then return empty strings")
             time.sleep(5)
-        return("", "")
+        return ("", "")
 
     # Check to see if some data is returned in the API call
     if response["pageInfo"]["totalResults"] == 0:
         logger.debug("API response empty. Returning empty strings")
-        return("", "")
+        return ("", "")
 
     # Fill both columns with info retrieved from YouTube
     name: str = response["items"][0]["snippet"]["title"]
@@ -63,6 +60,5 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
     logger.debug(f"Name: {name}, Categories: {cat}")
 
     # Had to add this to remove any unprintable chars returned by API call
-    name = ''.join([str(char)
-                    for char in name if char in string.printable])
-    return(name, cat)
+    name = "".join([str(char) for char in name if char in string.printable])
+    return (name, cat)

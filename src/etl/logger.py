@@ -3,10 +3,10 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 
-def get_logger(log: str):   # type: ignore
-    '''
+def get_logger(log: str):  # type: ignore
+    """
     Simple function to set up a logger
-    '''
+    """
 
     path = os.path.dirname(os.path.abspath(__file__))
     log_file = os.path.join(path, "data/logs/etl.log")
@@ -15,10 +15,10 @@ def get_logger(log: str):   # type: ignore
     logger.setLevel(logging.DEBUG)
 
     formatter = logging.Formatter(
-        '%(asctime)s | %(levelname)s | %(filename)s | %(funcName)s | %(message)s')
+        "%(asctime)s | %(levelname)s | %(filename)s | %(funcName)s | %(message)s"
+    )
 
-    file_handler = RotatingFileHandler(
-        log_file, maxBytes=2000000, backupCount=0)
+    file_handler = RotatingFileHandler(log_file, maxBytes=2000000, backupCount=0)
     file_handler.setFormatter(formatter)
 
     stream = logging.StreamHandler()
@@ -28,7 +28,7 @@ def get_logger(log: str):   # type: ignore
     logger.addHandler(file_handler)
     logger.addHandler(stream)
 
-    return(logger)
+    return logger
 
 
 if __name__ == "__main__":
