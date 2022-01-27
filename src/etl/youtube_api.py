@@ -2,26 +2,26 @@ import os
 import json
 import time
 import string
-from dotenv import load_dotenv
+from etl.main import ETL
 from typing import Tuple, Any
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from etl.logger import get_logger
 
-load_dotenv()
 logger = get_logger("youtube")
 
 
-def get_missing_data(link: str) -> Tuple[Any, Any]:
+def get_missing_data(link: str) -> Tuple[str, str]:
     """
     Function to fill missing data from YouTube
     """
 
-    api_key = str(os.getenv("API_KEY"))
+    instance = ETL()
+    api_key: str = instance.get_api()
 
     if len(api_key) != 39:
-        logger.error(f"Invalid API key or API not set")
-        return (0, 0)
+        logger.error("Invalid API key or API not set")
+        return ("Invalid API", "Invalid API")
 
     # Load YouTube categroty file in 'cats'
     path = os.path.dirname(os.path.abspath(__file__))
@@ -29,15 +29,17 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
     with open(cat_file) as jfile:
         cats = json.load(jfile)
 
-    youtube = build("youtube", "v3", developerKey=api_key)
-
     # Extract the video Id from the link
+    if "https://www.youtube.com/watch?v=" not in link:
+        logger.error("Invalid YouTube link")
+        return ("Invalid link", "Invalid link")
     id: str = link.split("v=")[1]
 
     logger.debug("Preparing YouTube API call")
-    request = youtube.videos().list(part="snippet", id=id)
 
     try:  # Try to get response
+        youtube = build("youtube", "v3", developerKey=api_key)
+        request = youtube.videos().list(part="snippet", id=id)
         response = request.execute()
         logger.debug("YouTube API call successful")
     except HttpError as err:  # API call didn't work
@@ -45,8 +47,7 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
         logger.error(f"Could not retrieve information for: {link}")
         # If the problem is from the remote end
         if err.resp.status in [403, 500, 503]:
-            logger.warning(
-                "Going to sleep for 5 secs and then return empty strings")
+            logger.warning("Going to sleep for 5 secs and then return empty strings")
             time.sleep(5)
         return ("", "")
 

@@ -1,10 +1,13 @@
 import os
-from etl.youtube_api import get_missing_data
-from etl.imdb_api import get_genre
-from etl.transform import transform_data
+from etl import transform_data
+from etl import get_missing_data
+from etl import get_genre
+from etl.main import ETL
 
 
 def test_get_missing_data() -> None:
+
+    instance = ETL()
 
     path = os.path.dirname(os.path.abspath(__file__))
 
@@ -13,14 +16,36 @@ def test_get_missing_data() -> None:
     if data.shape[0] > 5:
         data = data.sample(n=5)
 
+    # Testing nominal conditions
     for link in data["Link"]:
         name, cat = get_missing_data(link)
-        if isinstance(cat, int):
-            assert cat == 0 and name == 0
-        else:
-            if len(cat) == 0 and len(name) == 0:
-                assert name == ""
-                assert cat == ""
+        assert name != "Invalid"
+        assert cat != "Invalid"
+        assert len(name) > 0
+        assert len(cat) > 0
+
+    # Testing invalid API
+    api_key: str = instance.get_api()
+    instance.set_api("THIS_IS_WRONG_API_KEY")
+    for link in data["Link"]:
+        name, cat = get_missing_data(link)
+        assert name == "Invalid API"
+        assert cat == "Invalid API"
+    instance.set_api(api_key)
+
+    # Testing invalid input data (links)
+    data["Link"] = ""
+    for link in data["Link"]:
+        name, cat = get_missing_data(link)
+        assert name == "Invalid link"
+        assert cat == "Invalid link"
+
+    # Testing video not found
+    data["Link"] = "https://www.youtube.com/watch?v=$$$$$$$$"
+    for link in data["Link"]:
+        name, cat = get_missing_data(link)
+        assert name == ""
+        assert cat == ""
 
 
 def test_get_genre() -> None:
@@ -31,9 +56,16 @@ def test_get_genre() -> None:
     if data.shape[0] > 5:
         data = data.sample(n=5)
 
+    # Testing nominal conditions
     for name in data["Name"]:
         genre = get_genre(name)
-        assert isinstance(genre, str)
+        assert len(genre) > 0
+
+    # Testing invalid input data
+    data["Name"] = "TH|$_I$_WR0N6_NAM€"
+    for name in data["Name"]:
+        genre = get_genre(name)
+        assert genre == ""
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@
 /.tox/
 /__pycache__/
 /build/
-/dist/
+/dist/*.tar.gz
 /src/etl.egg-info/
 /src/etl/__pycache__/
 /tests/__pycache__/

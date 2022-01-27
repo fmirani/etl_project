@@ -53,7 +53,7 @@ def exec_select_query(item: pd.Series) -> bool:
     return insert
 
 
-def exec_insert_query(
+def get_insert_query(
     item: List[str],
 ) -> Tuple[str, Tuple[str, str, str, str, str, str, str, str]]:
     """
@@ -97,15 +97,10 @@ def create_db() -> None:
     Function to create a new table called 'watched'
     """
 
-    logger.info("Creating and setting up a new database named 'watched'")
+    logger.info("Setting up a new table named 'watched'")
 
     instance = ETL()
-    db_name = instance.get_db()
-
-    conn = sqlite.connect(db_name)
-    cursor = conn.cursor()
-
-    instance.set_connection(conn, cursor)
+    conn, cursor = instance.get_connection()
 
     logger.info(f"Database connected")
 
@@ -127,7 +122,7 @@ def create_db() -> None:
     cursor.execute(query)
     logger.debug("CREATE TABLE query successful")
 
-    logger.debug("Success")
+    logger.debug("Table created successfully")
 
 
 def load_data(data: pd.DataFrame) -> int:
@@ -144,16 +139,23 @@ def load_data(data: pd.DataFrame) -> int:
     instance = ETL()
     db_name = instance.get_db()
 
-    if not os.path.exists(db_name):
-        logger.info(f"No database found at '{db_name}'")
-        logger.info(f"Setting up a new database at '{db_name}'")
+    logger.info(f"Connecting to the database at '{db_name}'")
+    conn = sqlite.connect(db_name)
+    cursor = conn.cursor()
+    instance.set_connection(conn, cursor)
+
+    logger.info(f"Checking if the TABLE 'watched' exists already")
+
+    query = (
+        "SELECT count(name) "
+        "FROM sqlite_master "
+        "WHERE type='table' AND name='watched';"
+    )
+    cursor.execute(query)
+
+    if cursor.fetchone()[0] == 0:
+        logger.info("Table named 'watched' not found")
         create_db()
-        conn, cursor = instance.get_connection()
-    else:
-        logger.info(f"Database found at '{db_name}'. Connecting..")
-        conn = sqlite.connect(db_name)
-        cursor = conn.cursor()
-        instance.set_connection(conn, cursor)
 
     # Check if there is any data in dataframe to load in the DB
     if data.shape[0] == 0:
@@ -178,19 +180,17 @@ def load_data(data: pd.DataFrame) -> int:
     # in a separate thread.
     logger.info("Starting context manager for multi-threading")
     with ThreadPoolExecutor(max_workers=5) as executor:
-        query_data = executor.map(exec_insert_query, data_list)
+        query_data = executor.map(get_insert_query, data_list)
 
     logger.info("Out of context manager now")
-
-    if len(list(query_data)) == 0:
-        return(0)
 
     added: int = 0
     logger.info("Executing INSERT queries now")
     for query, values in query_data:
         print("Query: ", query)
-        print("Values: ", list(values))
-        cursor.execute(query, list(values))
+        print("Values: ", values)
+
+        cursor.execute(query, values)
         logger.debug(f"{values} added")
         added += 1
         if added % 100 == 0:

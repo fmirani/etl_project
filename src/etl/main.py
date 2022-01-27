@@ -1,17 +1,18 @@
 import os
 from typing import Any, Tuple
+from dotenv import load_dotenv
 
+load_dotenv()
 
 PATH = os.path.dirname(os.path.abspath(__file__))
-# os.environ["API_KEY"] = "API_KEY_GOES_INSIDE_THESE_QUOTES"
 
 
 class ETL:
-    api_key: str = ""
+
     db_name: str = os.path.join(PATH, "data/database.db")
 
-    service: str = ""
-    filename: str = ""
+    service: str
+    filename: str
 
     simulation: bool = False
     simul_days: int = 0
@@ -32,10 +33,10 @@ class ETL:
         return ETL.filename
 
     def set_api(self, api_key: str) -> None:
-        ETL.api_key = api_key
+        os.environ["API_KEY"] = api_key
 
     def get_api(self) -> str:
-        return ETL.api_key
+        return str(os.getenv("API_KEY"))
 
     def get_db(self) -> str:
         return ETL.db_name
