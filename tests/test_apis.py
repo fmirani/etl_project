@@ -19,10 +19,8 @@ def test_get_missing_data() -> None:
     # Testing nominal conditions
     for link in data["Link"]:
         name, cat = get_missing_data(link)
-        assert name != "Invalid"
-        assert cat != "Invalid"
-        assert len(name) > 0
-        assert len(cat) > 0
+        assert name != "Invalid API" and name != "Invalid link" and name != ""
+        assert cat != "Invalid API" and cat != "Invalid link" and cat != ""
 
     # Testing invalid input data (links)
     data["Link"] = "THIS_IS_WRONG_YOUTUBE_LINK"
