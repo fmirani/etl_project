@@ -64,7 +64,7 @@ def test_load_data() -> None:
     yt_history = os.path.join(path, "../src/etl/data/yt_sample.html")
     nf_history = os.path.join(path, "../src/etl/data/nf_sample.csv")
 
-    added = 0
+    added: int = 0
     for item in [["youtube", yt_history], ["netflix", nf_history]]:
 
         data = transform_data(item[0], item[1])

@@ -182,6 +182,9 @@ def load_data(data: pd.DataFrame) -> int:
 
     logger.info("Out of context manager now")
 
+    if len(list(query_data)) == 0:
+        return(0)
+
     added: int = 0
     logger.info("Executing INSERT queries now")
     for query, values in query_data:

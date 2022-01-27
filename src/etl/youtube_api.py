@@ -17,7 +17,7 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
     Function to fill missing data from YouTube
     """
 
-    api_key: str = str(os.getenv("API_KEY"))
+    api_key = str(os.getenv("API_KEY"))
 
     if len(api_key) != 39:
         logger.error(f"Invalid API key or API not set")
@@ -45,7 +45,8 @@ def get_missing_data(link: str) -> Tuple[Any, Any]:
         logger.error(f"Could not retrieve information for: {link}")
         # If the problem is from the remote end
         if err.resp.status in [403, 500, 503]:
-            logger.warning("Going to sleep for 5 secs and then return empty strings")
+            logger.warning(
+                "Going to sleep for 5 secs and then return empty strings")
             time.sleep(5)
         return ("", "")
 
