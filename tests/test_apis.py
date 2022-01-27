@@ -34,7 +34,7 @@ def test_get_missing_data() -> None:
     instance.set_api(api_key)
 
     # Testing invalid input data (links)
-    data["Link"] = ""
+    data["Link"] = "THIS_IS_WRONG_YOUTUBE_LINK_AND_SOME_MOR"
     for link in data["Link"]:
         name, cat = get_missing_data(link)
         assert name == "Invalid link"

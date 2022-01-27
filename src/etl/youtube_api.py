@@ -3,7 +3,7 @@ import json
 import time
 import string
 from etl.main import ETL
-from typing import Tuple, Any
+from typing import Tuple
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from etl.logger import get_logger
@@ -47,7 +47,8 @@ def get_missing_data(link: str) -> Tuple[str, str]:
         logger.error(f"Could not retrieve information for: {link}")
         # If the problem is from the remote end
         if err.resp.status in [403, 500, 503]:
-            logger.warning("Going to sleep for 5 secs and then return empty strings")
+            logger.warning(
+                "Going to sleep for 5 secs and then return empty strings")
             time.sleep(5)
         return ("", "")
 

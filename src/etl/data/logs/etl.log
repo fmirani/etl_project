@@ -1,0 +1,87 @@
+2022-01-27 18:24:33,879 | INFO | transform.py | transform_youtube_data | Transforming YouTube data now
+2022-01-27 18:24:33,894 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-27 18:24:34,152 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-27 18:24:34,153 | DEBUG | youtube_api.py | get_missing_data | Name: Paw Patrol : Mighty Pups Coloring Pages for Kids, Categories: Entertainment
+2022-01-27 18:24:34,154 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-27 18:24:34,474 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-27 18:24:34,475 | DEBUG | youtube_api.py | get_missing_data | Name: The Weeknd - Blinding Lights (Official Audio), Categories: Music
+2022-01-27 18:24:34,476 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-27 18:24:34,763 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-27 18:24:34,763 | DEBUG | youtube_api.py | get_missing_data | Name: Paw Patrol Vehicle Upgrades get painted the Wrong Colors!, Categories: Film & Animation
+2022-01-27 18:24:34,764 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-27 18:24:34,957 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-27 18:24:34,957 | DEBUG | youtube_api.py | get_missing_data | Name: Mark Ronson - Uptown Funk (Official Video) ft. Bruno Mars, Categories: Music
+2022-01-27 18:24:34,958 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-27 18:24:35,163 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-27 18:24:35,164 | DEBUG | youtube_api.py | get_missing_data | Name: Shakira - Waka Waka (This Time for Africa) (The Official 2010 FIFA World Cup™ Song), Categories: Music
+2022-01-27 18:24:35,164 | ERROR | youtube_api.py | get_missing_data | Invalid API key or API not set
+2022-01-27 18:24:35,165 | ERROR | youtube_api.py | get_missing_data | Invalid API key or API not set
+2022-01-27 18:24:35,167 | ERROR | youtube_api.py | get_missing_data | Invalid API key or API not set
+2022-01-27 18:24:35,167 | ERROR | youtube_api.py | get_missing_data | Invalid API key or API not set
+2022-01-27 18:24:35,168 | ERROR | youtube_api.py | get_missing_data | Invalid API key or API not set
+2022-01-27 18:24:35,170 | ERROR | youtube_api.py | get_missing_data | Invalid YouTube link
+2022-01-27 18:24:35,171 | ERROR | youtube_api.py | get_missing_data | Invalid YouTube link
+2022-01-27 18:24:35,172 | ERROR | youtube_api.py | get_missing_data | Invalid YouTube link
+2022-01-27 18:24:35,172 | ERROR | youtube_api.py | get_missing_data | Invalid YouTube link
+2022-01-27 18:24:35,173 | ERROR | youtube_api.py | get_missing_data | Invalid YouTube link
+2022-01-27 18:24:35,175 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-27 18:24:35,324 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-27 18:24:35,324 | DEBUG | youtube_api.py | get_missing_data | API response empty. Returning empty strings
+2022-01-27 18:24:35,324 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-27 18:24:35,680 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-27 18:24:35,681 | DEBUG | youtube_api.py | get_missing_data | API response empty. Returning empty strings
+2022-01-27 18:24:35,682 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-27 18:24:35,882 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-27 18:24:35,883 | DEBUG | youtube_api.py | get_missing_data | API response empty. Returning empty strings
+2022-01-27 18:24:35,883 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-27 18:24:36,126 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-27 18:24:36,127 | DEBUG | youtube_api.py | get_missing_data | API response empty. Returning empty strings
+2022-01-27 18:24:36,128 | DEBUG | youtube_api.py | get_missing_data | Preparing YouTube API call
+2022-01-27 18:24:36,321 | DEBUG | youtube_api.py | get_missing_data | YouTube API call successful
+2022-01-27 18:24:36,322 | DEBUG | youtube_api.py | get_missing_data | API response empty. Returning empty strings
+2022-01-27 18:24:36,328 | INFO | transform.py | transform_netflix_data | Transforming Netflix data now
+2022-01-27 18:24:36,385 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-27 18:24:36,385 | DEBUG | imdb_api.py | get_genre | Searching name: The Unforgivable
+2022-01-27 18:24:37,778 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-27 18:24:37,778 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-27 18:24:42,511 | DEBUG | imdb_api.py | get_genre | Title found: The Unforgivable
+2022-01-27 18:24:42,513 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-27 18:24:42,513 | DEBUG | imdb_api.py | get_genre | Searching name: Superstore
+2022-01-27 18:24:43,535 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-27 18:24:43,536 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-27 18:24:47,098 | DEBUG | imdb_api.py | get_genre | Title found: Superstore
+2022-01-27 18:24:47,099 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-27 18:24:47,100 | DEBUG | imdb_api.py | get_genre | Searching name: Don't Look Up
+2022-01-27 18:24:48,113 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-27 18:24:48,113 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-27 18:24:51,211 | DEBUG | imdb_api.py | get_genre | Title found: Don't Look Up
+2022-01-27 18:24:51,212 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-27 18:24:51,212 | DEBUG | imdb_api.py | get_genre | Searching name: Superstore
+2022-01-27 18:24:52,153 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-27 18:24:52,153 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-27 18:24:54,819 | DEBUG | imdb_api.py | get_genre | Title found: Superstore
+2022-01-27 18:24:54,820 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-27 18:24:54,820 | DEBUG | imdb_api.py | get_genre | Searching name: Superstore
+2022-01-27 18:24:55,876 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-27 18:24:55,876 | DEBUG | imdb_api.py | get_genre | Getting Title using ID
+2022-01-27 18:24:59,846 | DEBUG | imdb_api.py | get_genre | Title found: Superstore
+2022-01-27 18:24:59,848 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-27 18:24:59,848 | DEBUG | imdb_api.py | get_genre | Searching name: TH|$_I$_WR0N6_NAM€
+2022-01-27 18:25:00,994 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-27 18:25:00,994 | WARNING | imdb_api.py | get_genre | Name: TH|$_I$_WR0N6_NAM€ didn't return any results
+2022-01-27 18:25:00,997 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-27 18:25:00,997 | DEBUG | imdb_api.py | get_genre | Searching name: TH|$_I$_WR0N6_NAM€
+2022-01-27 18:25:01,786 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-27 18:25:01,786 | WARNING | imdb_api.py | get_genre | Name: TH|$_I$_WR0N6_NAM€ didn't return any results
+2022-01-27 18:25:01,787 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-27 18:25:01,787 | DEBUG | imdb_api.py | get_genre | Searching name: TH|$_I$_WR0N6_NAM€
+2022-01-27 18:25:02,781 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-27 18:25:02,781 | WARNING | imdb_api.py | get_genre | Name: TH|$_I$_WR0N6_NAM€ didn't return any results
+2022-01-27 18:25:02,782 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-27 18:25:02,782 | DEBUG | imdb_api.py | get_genre | Searching name: TH|$_I$_WR0N6_NAM€
+2022-01-27 18:25:03,741 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-27 18:25:03,741 | WARNING | imdb_api.py | get_genre | Name: TH|$_I$_WR0N6_NAM€ didn't return any results
+2022-01-27 18:25:03,742 | DEBUG | imdb_api.py | get_genre | A new IMDB instance created
+2022-01-27 18:25:03,742 | DEBUG | imdb_api.py | get_genre | Searching name: TH|$_I$_WR0N6_NAM€
+2022-01-27 18:25:04,601 | DEBUG | imdb_api.py | get_genre | Search ended
+2022-01-27 18:25:04,602 | WARNING | imdb_api.py | get_genre | Name: TH|$_I$_WR0N6_NAM€ didn't return any results
