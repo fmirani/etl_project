@@ -16,7 +16,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-        environment: etl_environment
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -25,3 +24,5 @@ jobs:
       - name: Test with tox
         run: |
           tox
+      - env: 
+          API_KEY: ${{ secrets.API_KEY }}
