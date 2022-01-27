@@ -24,6 +24,20 @@ def test_get_missing_data() -> None:
         assert len(name) > 0
         assert len(cat) > 0
 
+    # Testing invalid input data (links)
+    data["Link"] = "THIS_IS_WRONG_YOUTUBE_LINK"
+    for link in data["Link"]:
+        name, cat = get_missing_data(link)
+        assert name == "Invalid link"
+        assert cat == "Invalid link"
+
+    # Testing "video not found"
+    data["Link"] = "https://www.youtube.com/watch?v=$$$$$$$$"
+    for link in data["Link"]:
+        name, cat = get_missing_data(link)
+        assert name == ""
+        assert cat == ""
+
     # Testing invalid API
     api_key: str = instance.get_api()
     instance.set_api("THIS_IS_WRONG_API_KEY")
@@ -32,20 +46,6 @@ def test_get_missing_data() -> None:
         assert name == "Invalid API"
         assert cat == "Invalid API"
     instance.set_api(api_key)
-
-    # Testing invalid input data (links)
-    data["Link"] = "THIS_IS_WRONG_YOUTUBE_LINK_AND_SOME_MOR"
-    for link in data["Link"]:
-        name, cat = get_missing_data(link)
-        assert name == "Invalid link"
-        assert cat == "Invalid link"
-
-    # Testing video not found
-    data["Link"] = "https://www.youtube.com/watch?v=$$$$$$$$"
-    for link in data["Link"]:
-        name, cat = get_missing_data(link)
-        assert name == ""
-        assert cat == ""
 
 
 def test_get_genre() -> None:
